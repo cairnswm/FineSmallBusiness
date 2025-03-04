@@ -11,7 +11,7 @@ import { TooltipProvider } from "./components/ui/tooltip";
 
 import { ThemeProvider } from "./components/layout/theme-provider";
 import { SidebarProvider } from "./components/ui/sidebar";
-import { DashboardProvider } from "./context/DashboardContext";
+import DashboardProvider from "./context/DashboardContext";
 import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
