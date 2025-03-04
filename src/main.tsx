@@ -5,12 +5,12 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import { ThemeProvider } from "./components/layout/theme-provider";
-import { SidebarProvider } from "./components/ui/sidebar";
+import { DashboardProvider } from "./context/DashboardContext";
 import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
@@ -18,9 +18,9 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <SidebarProvider>
-      <TooltipProvider>
-        <ThemeProvider>
+    <TooltipProvider>
+      <ThemeProvider>
+        <DashboardProvider>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -30,8 +30,8 @@ createRoot(document.getElementById("root")!).render(
           <Sonner />
           <Toaster />
           <Banner />
-        </ThemeProvider>
-      </TooltipProvider>
-    </SidebarProvider>
+        </DashboardProvider>
+      </ThemeProvider>
+    </TooltipProvider>
   </QueryClientProvider>
 );
