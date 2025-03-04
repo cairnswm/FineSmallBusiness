@@ -24,10 +24,10 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, amount, d
         <div className="text-sm text-muted-foreground">Date: {date}</div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2">
-        <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
+        <Button variant="outline" size="sm" onClick={() => onEdit(id)} aria-label={`Edit ${title}`}>
           Edit
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => onDelete(id)}>
+        <Button variant="destructive" size="sm" onClick={() => onDelete(id)} aria-label={`Delete ${title}`}>
           Delete
         </Button>
       </CardFooter>
