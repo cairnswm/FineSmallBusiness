@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { clients, quotes, deleteQuote } = useContext(DashboardContext);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex ">
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
