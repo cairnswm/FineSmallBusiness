@@ -11,9 +11,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <DashboardSidebar />
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
