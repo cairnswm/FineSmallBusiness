@@ -188,4 +188,3 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 };
 
 export { DashboardProvider };
-export default DashboardProvider;

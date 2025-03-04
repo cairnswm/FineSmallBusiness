@@ -11,6 +11,7 @@ import { TooltipProvider } from "./components/ui/tooltip";
 
 import { ThemeProvider } from "./components/layout/theme-provider";
 import { SidebarProvider } from "./components/ui/sidebar";
+import { DashboardProvider } from "./context/DashboardContext";
 import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
@@ -21,15 +22,17 @@ createRoot(document.getElementById("root")!).render(
     <SidebarProvider>
       <TooltipProvider>
         <ThemeProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-          </BrowserRouter>
-          <Sonner />
-          <Toaster />
-          <Banner />
+          <DashboardProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+              </Routes>
+            </BrowserRouter>
+            <Sonner />
+            <Toaster />
+            <Banner />
+          </DashboardProvider>
         </ThemeProvider>
       </TooltipProvider>
     </SidebarProvider>
