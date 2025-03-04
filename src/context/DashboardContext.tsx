@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Create the DashboardContext
-export const DashboardContext = createContext();
+export const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
 
 // Custom hook to use the DashboardContext<DashboardContextType | undefined>(undefined);
 export const useDashboardContext = (): DashboardContextType => {
@@ -136,7 +136,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   }, []);
 
   // Function to add a new client
-  const addClient = (client) => {
+  const addClient = (client: Client) => {
     setClients((prevClients) => [...prevClients, client]);
   };
 
