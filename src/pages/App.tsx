@@ -1,14 +1,6 @@
-import React from 'react';
-import DashboardProvider from '../context/DashboardContext';
-import DashboardHeader from '../components/dashboard/DashboardHeader';
-import BusinessInfo from '../components/dashboard/BusinessInfo';
-import ClientCard from '../components/dashboard/ClientCard';
-import QuoteCard from '../components/dashboard/QuoteCard';
-
 import React, { useContext } from 'react';
 import { DashboardContext } from '../context/DashboardContext';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
-import DashboardSidebar from '../components/dashboard/DashboardSidebar';
 import BusinessInfo from '../components/dashboard/BusinessInfo';
 import ClientCard from '../components/dashboard/ClientCard';
 import QuoteCard from '../components/dashboard/QuoteCard';
