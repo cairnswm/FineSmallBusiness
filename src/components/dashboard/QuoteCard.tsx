@@ -28,19 +28,9 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, amount, d
         <Button variant="outline" size="sm" onClick={() => onEdit(id)} aria-label={`Edit ${title}`}>
           Edit
         </Button>
-        <Select
-          onValueChange={(value) => console.log(`Status changed to ${value} for quote ${id}`)}
-          defaultValue="pending"
-        >
-          <SelectTrigger className="w-[120px]">
-            <span>Status</span>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="approved">Approved</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
-          </SelectContent>
-        </Select>
+        <Button variant="destructive" size="sm" onClick={() => onDelete(id)} aria-label={`Delete ${title}`}>
+          Delete
+        </Button>
       </CardFooter>
     </Card>
   );
