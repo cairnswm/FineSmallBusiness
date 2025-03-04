@@ -6,7 +6,7 @@ import WaitingListModal from "@/components/landing/WaitingListModal";
 
 const Index = () => {
   return (
-    <main className="w-full min-h-screen bg-background">
+    <main className="w-full bg-background">
       <div className="container mx-auto px-4 py-8 space-y-16">
         {/* Hero Section */}
         <section className="text-center space-y-6">
