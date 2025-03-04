@@ -2,8 +2,11 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
 import { Home, Users, FileText, Settings } from 'lucide-react';
+import { useSidebar } from '@/components/ui/sidebar';
 
 const DashboardSidebar: React.FC = () => {
+  const { state } = useSidebar();
+
   const menuItems = [
     { title: 'Home', url: '/app', icon: Home },
     { title: 'Clients', url: '/app/clients', icon: Users },
@@ -12,7 +15,7 @@ const DashboardSidebar: React.FC = () => {
   ];
 
   return (
-    <Sidebar className="bg-primary text-primary-foreground shadow-lg border-r border-border">
+    <Sidebar className={`bg-primary text-primary-foreground shadow-lg border-r border-border ${state === 'collapsed' ? 'w-[--sidebar-width-icon]' : 'w-[--sidebar-width]'}`}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
@@ -23,7 +26,7 @@ const DashboardSidebar: React.FC = () => {
                   <SidebarMenuButton asChild>
                     <Link to={item.url} className="flex items-center space-x-2">
                       <item.icon className="w-5 h-5" />
-                      <span>{item.title}</span>
+                      <span className={`${state === 'collapsed' ? 'hidden' : 'block'}`}>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
