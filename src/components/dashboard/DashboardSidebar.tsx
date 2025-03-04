@@ -12,7 +12,7 @@ const DashboardSidebar: React.FC = () => {
   ];
 
   return (
-    <Sidebar className="bg-primary text-primary-foreground">
+    <Sidebar className="bg-primary text-primary-foreground shadow-lg border-r border-border">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Dashboard</SidebarGroupLabel>

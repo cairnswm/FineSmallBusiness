@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDashboardContext } from '@/context/DashboardContext';
+import { Button } from '@/components/ui/button';
 
 const DashboardHeader: React.FC = () => {
   const { businessInfo } = useDashboardContext();
@@ -10,7 +11,7 @@ const DashboardHeader: React.FC = () => {
         <h1 className="text-2xl font-bold">
           {businessInfo ? businessInfo.name : 'Dashboard'}
         </h1>
-        <div className="text-sm">
+        <div className="flex items-center space-x-4">
           {businessInfo ? (
             <span>
               Welcome, <strong>{businessInfo.ownerName || 'User'}</strong>
@@ -18,6 +19,9 @@ const DashboardHeader: React.FC = () => {
           ) : (
             'Loading...'
           )}
+          <Button variant="outline" size="sm" onClick={() => alert('Settings clicked')}>
+            Settings
+          </Button>
         </div>
       </div>
     </header>

@@ -51,10 +51,25 @@ interface Invoice {
   date: string;
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(null);
-  const [clients, setClients] = useState<Client[]>([]);
-  const [quotes, setQuotes] = useState<Quote[]>([]);
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>({
+    name: "Mock Business",
+    email: "mock@business.com",
+    phone: "123-456-7890",
+    address: "123 Mock Street, Mock City",
+    website: "https://mockbusiness.com",
+  });
+  const [clients, setClients] = useState<Client[]>([
+    { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
+    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
+  ]);
+  const [quotes, setQuotes] = useState<Quote[]>([
+    { id: 1, title: "Quote 1", description: "Description for Quote 1", amount: "100.00", date: "2023-01-01" },
+    { id: 2, title: "Quote 2", description: "Description for Quote 2", amount: "200.00", date: "2023-02-01" },
+  ]);
+  const [invoices, setInvoices] = useState<Invoice[]>([
+    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
+    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
+  ]);
 
   // Fetch data from APIs when the component mounts
   useEffect(() => {
@@ -123,13 +138,6 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   // Function to add a new client
   const addClient = (client) => {
     setClients((prevClients) => [...prevClients, client]);
-  };
-
-  // Function to update a quote
-  const updateQuote = (id, updatedQuote) => {
-    setQuotes((prevQuotes) =>
-      prevQuotes.map((quote) => (quote.id === id ? updatedQuote : quote))
-    );
   };
 
   // Function to update a quote
