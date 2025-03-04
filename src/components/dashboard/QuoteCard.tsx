@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface QuoteCardProps {
   id: number;
