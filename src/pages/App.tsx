@@ -1,7 +1,6 @@
 import React from 'react';
 import DashboardProvider from '../context/DashboardContext';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
-import DashboardSidebar from '../components/dashboard/DashboardSidebar';
 import BusinessInfo from '../components/dashboard/BusinessInfo';
 import ClientCard from '../components/dashboard/ClientCard';
 import QuoteCard from '../components/dashboard/QuoteCard';
@@ -19,8 +18,6 @@ const App = () => {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <DashboardSidebar />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
