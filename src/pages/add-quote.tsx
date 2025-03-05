@@ -9,11 +9,25 @@ import AddClientModal from "@/components/dashboard/AddClientModal";
 
 const AddQuotePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, addQuote } = useContext(DashboardContext);
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    clientId: "",
+  const { clients, quotes, addQuote, updateQuote } = useContext(DashboardContext);
+  const [formData, setFormData] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const quoteId = params.get("id");
+    if (quoteId) {
+      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
+      if (existingQuote) {
+        return {
+          title: existingQuote.title,
+          description: existingQuote.description,
+          clientId: String(existingQuote.clientId),
+        };
+      }
+    }
+    return {
+      title: "",
+      description: "",
+      clientId: "",
+    };
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
@@ -30,7 +44,21 @@ const AddQuotePage: React.FC = () => {
     }
   };
 
-  const [lineItems, setLineItems] = useState([{ description: "", quantity: 1, price: 0 }]);
+  const [lineItems, setLineItems] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const quoteId = params.get("id");
+    if (quoteId) {
+      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
+      if (existingQuote) {
+        return existingQuote.lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          price: item.unitPrice,
+        }));
+      }
+    }
+    return [{ description: "", quantity: 1, price: 0 }];
+  });
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
     setLineItems((prevItems) =>
@@ -55,16 +83,33 @@ const AddQuotePage: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.title && formData.description && formData.clientId) {
-      const newQuote = {
-        id: Date.now(),
-        title: formData.title,
-        description: formData.description,
-        date: new Date().toISOString().split("T")[0],
-        clientId: Number(formData.clientId),
-        lineItems,
-        amount: calculateTotalAmount(),
-      };
-      addQuote(newQuote);
+      const params = new URLSearchParams(window.location.search);
+      const quoteId = params.get("id");
+      if (quoteId) {
+        const updatedQuote = {
+          title: formData.title,
+          description: formData.description,
+          clientId: Number(formData.clientId),
+          lineItems: lineItems.map((item) => ({
+            description: item.description,
+            quantity: item.quantity,
+            unitPrice: item.price,
+          })),
+        };
+        updateQuote(Number(quoteId), updatedQuote);
+      } else {
+        const newQuote = {
+          title: formData.title,
+          description: formData.description,
+          clientId: Number(formData.clientId),
+          lineItems: lineItems.map((item) => ({
+            description: item.description,
+            quantity: item.quantity,
+            unitPrice: item.price,
+          })),
+        };
+        addQuote(newQuote);
+      }
       navigate("/dashboard");
     } else {
       alert("Please fill out all fields.");
@@ -74,7 +119,7 @@ const AddQuotePage: React.FC = () => {
   return (
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{formData.id ? "Edit Quote" : "Add New Quote"}</h1>
+        <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Quote" : "Add New Quote"}</h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
           Back
         </Button>
@@ -177,7 +222,7 @@ const AddQuotePage: React.FC = () => {
           <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
             Cancel
           </Button>
-          <Button type="submit">Add Quote</Button>
+          <Button type="submit">{new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}</Button>
         </div>
       </Form>
 
