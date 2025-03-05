@@ -94,6 +94,7 @@ const AddQuotePage: React.FC = () => {
           quantity: item.quantity,
           unitPrice: item.price,
         })),
+        totalAmount: calculateTotalAmount(),
       };
 
       if (quoteId) {
