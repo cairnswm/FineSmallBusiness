@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 import { DashboardContext } from "@/context/DashboardContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,10 +104,14 @@ const AddQuotePage: React.FC = () => {
           addQuote(quotePayload);
         }
       } else {
-        toast.error("Please fill out all required fields.");
+        toast({
+          title: "Error",
+          description: "Please fill out all required fields.",
+          variant: "destructive",
+        });
         return;
       }
-    };
+    }
 
   return (
     <div className="p-6 space-y-6 pb-40">

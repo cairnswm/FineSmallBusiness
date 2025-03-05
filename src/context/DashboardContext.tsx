@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from "@/hooks/use-toast";
 
 // Create the DashboardContext
 export const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
@@ -228,7 +229,6 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             quote.id === id ? savedQuote : quote
           )
         );
-        import { toast } from "@/hooks/use-toast";
 
         toast({
           title: "Quote Updated",
