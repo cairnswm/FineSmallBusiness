@@ -19,6 +19,7 @@ import AddInvoicePage from "./pages/add-invoice";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
+  <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
         <BrowserRouter>
