@@ -218,11 +218,16 @@ const AddQuotePage: React.FC = () => {
           </div>
         </FormItem>
 
-        <div className="flex justify-end space-x-4">
-          <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
-            Cancel
-          </Button>
-          <Button type="submit">{new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}</Button>
+        <div className="space-y-4">
+          <div className="text-right text-lg font-semibold">
+            Total: ${calculateTotalAmount().toFixed(2)}
+          </div>
+          <div className="flex justify-end space-x-4">
+            <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
+              Cancel
+            </Button>
+            <Button type="submit">{new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}</Button>
+          </div>
         </div>
       </Form>
 
