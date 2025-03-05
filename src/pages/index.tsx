@@ -1,5 +1,6 @@
 // Update this page (the content is just a fallback if you fail to update the page). Always include w-full and min-h-screen classes in the main element.
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import FeatureCard from "@/components/landing/FeatureCard";
 import PricingCard from "@/components/landing/PricingCard";
 import WaitingListModal from "@/components/landing/WaitingListModal";
