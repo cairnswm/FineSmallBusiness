@@ -13,12 +13,11 @@ const AddQuotePage: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    amount: "",
     clientId: "",
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -31,6 +30,28 @@ const AddQuotePage: React.FC = () => {
     }
   };
 
+  const [lineItems, setLineItems] = useState([{ description: "", quantity: 1, price: 0 }]);
+
+  const handleLineItemChange = (index: number, field: string, value: string | number) => {
+    setLineItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  const handleAddLineItem = () => {
+    setLineItems((prevItems) => [...prevItems, { description: "", quantity: 1, price: 0 }]);
+  };
+
+  const handleRemoveLineItem = (index: number) => {
+    setLineItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+
+  const calculateTotalAmount = () => {
+    return lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.title && formData.description && formData.clientId) {
@@ -40,6 +61,8 @@ const AddQuotePage: React.FC = () => {
         description: formData.description,
         date: new Date().toISOString().split("T")[0],
         clientId: Number(formData.clientId),
+        lineItems,
+        amount: calculateTotalAmount(),
       };
       addQuote(newQuote);
       navigate("/dashboard");
@@ -109,6 +132,45 @@ const AddQuotePage: React.FC = () => {
             </Select>
           </FormControl>
           <FormMessage />
+        </FormItem>
+
+        <FormItem>
+          <FormLabel>Line Items</FormLabel>
+          <div className="space-y-4">
+            {lineItems.map((item, index) => (
+              <div key={index} className="flex space-x-4 items-center">
+                <Input
+                  name={`description-${index}`}
+                  value={item.description}
+                  onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
+                  placeholder="Description"
+                  required
+                />
+                <Input
+                  name={`quantity-${index}`}
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => handleLineItemChange(index, "quantity", Number(e.target.value))}
+                  placeholder="Quantity"
+                  required
+                />
+                <Input
+                  name={`price-${index}`}
+                  type="number"
+                  value={item.price}
+                  onChange={(e) => handleLineItemChange(index, "price", Number(e.target.value))}
+                  placeholder="Price"
+                  required
+                />
+                <Button variant="destructive" onClick={() => handleRemoveLineItem(index)}>
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button type="button" variant="outline" onClick={handleAddLineItem}>
+              Add Line Item
+            </Button>
+          </div>
         </FormItem>
 
         <div className="flex justify-end space-x-4">

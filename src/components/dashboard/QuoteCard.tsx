@@ -21,7 +21,9 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, amount, d
         <CardDescription className="text-sm text-muted-foreground">{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="text-md font-medium text-primary">Amount: {amount}</div>
+        <div className="text-md font-medium text-primary">
+          Amount: {lineItems.reduce((total, item) => total + item.amount, 0).toFixed(2)}
+        </div>
         <div className="text-sm text-muted-foreground">Date: {date}</div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2">

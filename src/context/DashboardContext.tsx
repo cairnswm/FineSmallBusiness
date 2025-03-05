@@ -41,8 +41,15 @@ interface Quote {
   id: number;
   title: string;
   description: string;
-  amount: string;
+  lineItems: LineItem[];
   date: string;
+}
+
+interface LineItem {
+  id: number;
+  description: string;
+  quantity: number;
+  unitPrice: number;
 }
 interface Invoice {
   id: number;
@@ -142,14 +149,26 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to add a new quote
-  const addQuote = async (quote: Quote) => {
+  const addQuote = async (quote: Omit<Quote, 'id' | 'date'>) => {
     try {
+      const totalAmount = quote.lineItems.reduce(
+        (sum, item) => sum + item.quantity * item.unitPrice,
+        0
+      );
+
+      const newQuote = {
+        ...quote,
+        id: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+        totalAmount,
+      };
+
       const response = await fetch('/api/quotes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(quote),
+        body: JSON.stringify(newQuote),
       });
 
       if (response.ok) {
@@ -164,9 +183,18 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to update a quote
-  const updateQuote = (id: number, updatedQuote: Quote) => {
+  const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = updatedQuote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
+
     setQuotes((prevQuotes) =>
-      prevQuotes.map((quote) => (quote.id === id ? updatedQuote : quote))
+      prevQuotes.map((quote) =>
+        quote.id === id
+          ? { ...quote, ...updatedQuote, totalAmount }
+          : quote
+      )
     );
   };
 
