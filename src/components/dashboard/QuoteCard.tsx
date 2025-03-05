@@ -30,8 +30,8 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems
         <CardDescription className="text-sm text-muted-foreground">{description}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="text-md font-medium text-primary">Total: ${totalAmount}</div>
-        <div className="text-sm text-muted-foreground">Date: {date}</div>
+        <div className="text-md font-medium text-primary">Total Amount: ${totalAmount}</div>
+        <div className="text-sm text-muted-foreground">Date Issued: {date}</div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2">
         <Button

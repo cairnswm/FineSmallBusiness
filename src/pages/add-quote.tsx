@@ -85,8 +85,8 @@ const AddQuotePage: React.FC = () => {
     if (formData.title && formData.description && formData.clientId) {
       const params = new URLSearchParams(window.location.search);
       const quoteId = params.get("id");
-      if (quoteId) {
-        const updatedQuote = {
+      if (formData.title && formData.description && formData.clientId) {
+        const quotePayload = {
           title: formData.title,
           description: formData.description,
           clientId: Number(formData.clientId),
@@ -96,26 +96,17 @@ const AddQuotePage: React.FC = () => {
             unitPrice: item.price,
           })),
         };
-        updateQuote(Number(quoteId), updatedQuote);
+
+        if (quoteId) {
+          updateQuote(Number(quoteId), quotePayload);
+        } else {
+          addQuote(quotePayload);
+        }
       } else {
-        const newQuote = {
-          title: formData.title,
-          description: formData.description,
-          clientId: Number(formData.clientId),
-          lineItems: lineItems.map((item) => ({
-            description: item.description,
-            quantity: item.quantity,
-            unitPrice: item.price,
-          })),
-        };
-        addQuote(newQuote);
+        toast.error("Please fill out all required fields.");
+        return;
       }
-      navigate("/dashboard");
-      toast.success("Quote updated successfully!");
-    } else {
-      alert("Please fill out all fields.");
-    }
-  };
+    };
 
   return (
     <div className="p-6 space-y-6 pb-40">

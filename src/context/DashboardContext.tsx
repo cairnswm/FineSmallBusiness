@@ -228,11 +228,14 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             quote.id === id ? savedQuote : quote
           )
         );
+        import { toast } from "@/hooks/use-toast";
+
         toast({
           title: "Quote Updated",
           description: "The quote has been successfully updated.",
+          variant: "success",
         });
-        window.location.href = '/dashboard';
+        window.location.href = "/dashboard";
       } else {
         console.error('Failed to update the quote');
       }
