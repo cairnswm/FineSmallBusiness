@@ -68,7 +68,7 @@ const Dashboard = () => {
                 id={quote.id}
                 title={quote.title}
                 description={quote.description}
-                amount={quote.amount}
+                lineItems={quote.lineItems}
                 date={quote.date}
                 onEdit={(id) => console.log(`Edit quote ${id}`)}
                 onDelete={(id) => deleteQuote(id)}
