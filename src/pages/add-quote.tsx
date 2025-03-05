@@ -110,14 +110,14 @@ const AddQuotePage: React.FC = () => {
         };
         addQuote(newQuote);
       }
-      window.location.href = "/dashboard";
+      navigate("/dashboard");
     } else {
       alert("Please fill out all fields.");
     }
   };
 
   return (
-    <div className="p-6 space-y-6 pb-60">
+    <div className="p-6 space-y-6 pb-80">
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Quote" : "Add New Quote"}</h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
@@ -151,7 +151,7 @@ const AddQuotePage: React.FC = () => {
               onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
               placeholder="Enter quote description"
               required
-              className="textarea h-32 border border-gray-300 rounded-md p-2 resize-none"
+              className="textarea h-32 border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </FormControl>
           <FormMessage />
