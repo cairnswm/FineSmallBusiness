@@ -169,6 +169,11 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 
   // Function to add a new quote
   const addQuote = (quote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = quote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
+
     const newQuote = {
       ...quote,
       id: Date.now(),
@@ -177,6 +182,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         id: index + 1,
         ...item,
       })),
+      totalAmount,
     };
 
     setQuotes((prevQuotes) => [...prevQuotes, newQuote]);
