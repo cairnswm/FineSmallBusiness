@@ -202,46 +202,30 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to update a quote
-  const updateQuote = async (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
-    try {
-      const totalAmount = updatedQuote.lineItems.reduce(
-        (sum, item) => sum + item.quantity * item.unitPrice,
-        0
-      );
+  const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = updatedQuote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
 
-      const updatedQuoteWithTotal = {
-        ...updatedQuote,
-        totalAmount,
-      };
+    const updatedQuoteWithTotal = {
+      ...updatedQuote,
+      totalAmount,
+    };
 
-      const response = await fetch(`/api/quotes/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedQuoteWithTotal),
-      });
+    setQuotes((prevQuotes) =>
+      prevQuotes.map((quote) =>
+        quote.id === id ? { ...quote, ...updatedQuoteWithTotal } : quote
+      )
+    );
 
-      if (response.ok) {
-        const savedQuote = await response.json();
-        setQuotes((prevQuotes) =>
-          prevQuotes.map((quote) =>
-            quote.id === id ? savedQuote : quote
-          )
-        );
+    toast({
+      title: "Quote Updated",
+      description: "The quote has been successfully updated.",
+      variant: "success",
+    });
 
-        toast({
-          title: "Quote Updated",
-          description: "The quote has been successfully updated.",
-          variant: "success",
-        });
-        window.location.href = "/dashboard";
-      } else {
-        console.error('Failed to update the quote');
-      }
-    } catch (error) {
-      console.error('Error updating the quote:', error);
-    }
+    window.location.href = "/dashboard";
   };
 
   // Function to delete a quote
