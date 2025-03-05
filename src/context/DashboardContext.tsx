@@ -142,8 +142,25 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to add a new quote
-  const addQuote = (quote: Quote) => {
-    setQuotes((prevQuotes) => [...prevQuotes, quote]);
+  const addQuote = async (quote: Quote) => {
+    try {
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quote),
+      });
+
+      if (response.ok) {
+        const savedQuote = await response.json();
+        setQuotes((prevQuotes) => [...prevQuotes, savedQuote]);
+      } else {
+        console.error('Failed to save the quote');
+      }
+    } catch (error) {
+      console.error('Error saving the quote:', error);
+    }
   };
 
   // Function to update a quote

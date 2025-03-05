@@ -54,12 +54,12 @@ const Dashboard = () => {
         <section>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Quotes</h2>
-            <button
-              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
-              onClick={handleAddQuoteClick}
+            <a
+              href="/add-quote"
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-center"
             >
               Add Quote
-            </button>
+            </a>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {quotes.map((quote) => (
@@ -78,8 +78,6 @@ const Dashboard = () => {
         </section>
       </div>
 
-      {/* Add/Edit Quote Modal */}
-      <AddEditQuoteModal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 };
