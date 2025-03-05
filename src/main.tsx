@@ -15,10 +15,10 @@ import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
+import AddInvoicePage from "./pages/add-invoice";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
         <BrowserRouter>
@@ -28,6 +28,8 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-quote" element={<AddQuotePage />} />
               <Route path="/edit-quote/:id" element={<AddQuotePage />} />
+              <Route path="/add-invoice" element={<AddInvoicePage />} />
+              <Route path="/edit-invoice/:id" element={<AddInvoicePage />} />
             </Routes>
           </DashboardProvider>
           <Sonner />
