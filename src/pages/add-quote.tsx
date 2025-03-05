@@ -21,6 +21,11 @@ const AddQuotePage: React.FC = () => {
           title: existingQuote.title,
           description: existingQuote.description,
           clientId: String(existingQuote.clientId),
+          lineItems: existingQuote.lineItems.map((item) => ({
+            description: item.description,
+            quantity: item.quantity,
+            price: item.unitPrice,
+          })),
         };
       }
     }
@@ -28,6 +33,7 @@ const AddQuotePage: React.FC = () => {
       title: "",
       description: "",
       clientId: "",
+      lineItems: [{ description: "", quantity: 1, price: 0 }],
     };
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
@@ -81,36 +87,34 @@ const AddQuotePage: React.FC = () => {
     return lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveQuote = () => {
     if (formData.title && formData.description && formData.clientId) {
       const params = new URLSearchParams(window.location.search);
       const quoteId = params.get("id");
-      if (formData.title && formData.description && formData.clientId) {
-        const quotePayload = {
-          title: formData.title,
-          description: formData.description,
-          clientId: Number(formData.clientId),
-          lineItems: lineItems.map((item) => ({
-            description: item.description,
-            quantity: item.quantity,
-            unitPrice: item.price,
-          })),
-        };
+      const quotePayload = {
+        title: formData.title,
+        description: formData.description,
+        clientId: Number(formData.clientId),
+        lineItems: lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          unitPrice: item.price,
+        })),
+        totalAmount: calculateTotalAmount(),
+      };
 
-        if (quoteId) {
-          updateQuote(Number(quoteId), quotePayload);
-        } else {
-          addQuote(quotePayload);
-        }
+      if (quoteId) {
+        updateQuote(Number(quoteId), quotePayload);
       } else {
-        toast({
-          title: "Error",
-          description: "Please fill out all required fields.",
-          variant: "destructive",
-        });
-        return;
+        addQuote(quotePayload);
       }
+      navigate("/dashboard");
+    } else {
+      toast({
+        title: "Error",
+        description: "Please fill out all required fields.",
+        variant: "destructive",
+      });
     }
   };
   
@@ -123,7 +127,7 @@ const AddQuotePage: React.FC = () => {
         </Button>
       </header>
 
-      <Form onSubmit={handleSubmit}>
+      <Form>
         <FormItem>
           <FormLabel htmlFor="title">Title</FormLabel>
           <FormControl>
@@ -227,7 +231,12 @@ const AddQuotePage: React.FC = () => {
             <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
               Cancel
             </Button>
-            <Button type="submit">{new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}</Button>
+            <Button
+              type="button"
+              onClick={handleSaveQuote}
+            >
+              {new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}
+            </Button>
           </div>
         </div>
       </Form>

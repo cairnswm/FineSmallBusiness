@@ -21,19 +21,19 @@ createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <DashboardProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <DashboardProvider>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-quote" element={<AddQuotePage />} />
               <Route path="/edit-quote/:id" element={<AddQuotePage />} />
             </Routes>
-          </BrowserRouter>
+          </DashboardProvider>
           <Sonner />
           <Toaster />
           <Banner />
-        </DashboardProvider>
+        </BrowserRouter>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>

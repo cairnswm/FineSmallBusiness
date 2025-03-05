@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
+import { Link } from 'react-router-dom';
 
 interface LineItem {
   id: number;
@@ -40,7 +41,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems
           asChild
           aria-label={`Edit ${title}`}
         >
-          <a href={`/add-quote?id=${id}`}>Edit</a>
+          <Link to={`/add-quote?id=${id}`}>Edit</Link>
         </Button>
         <Button variant="destructive" size="sm" onClick={() => onDelete(id)} aria-label={`Delete ${title}`}>
           Delete

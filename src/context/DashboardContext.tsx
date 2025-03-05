@@ -60,107 +60,74 @@ interface Invoice {
   date: string;
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>({
-    name: "Mock Business",
-    email: "mock@business.com",
-    phone: "123-456-7890",
-    address: "123 Mock Street, Mock City",
-    website: "https://mockbusiness.com",
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(() => {
+    const storedBusinessInfo = localStorage.getItem("businessInfo");
+    return storedBusinessInfo ? JSON.parse(storedBusinessInfo) : {
+      name: "Mock Business",
+      email: "mock@business.com",
+      phone: "123-456-7890",
+      address: "123 Mock Street, Mock City",
+      website: "https://mockbusiness.com",
+    };
   });
-  const [clients, setClients] = useState<Client[]>([
-    { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
-  ]);
-  const [quotes, setQuotes] = useState<Quote[]>([
-    {
-      id: 1,
-      title: "Quote 1",
-      description: "Description for Quote 1",
-      lineItems: [
-        { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
-        { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
-      ],
-      date: "2023-01-01",
-    },
-    {
-      id: 2,
-      title: "Quote 2",
-      description: "Description for Quote 2",
-      lineItems: [
-        { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
-        { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
-      ],
-      date: "2023-02-01",
-    },
-  ]);
-  const [invoices, setInvoices] = useState<Invoice[]>([
-    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
-    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
-  ]);
+  const [clients, setClients] = useState<Client[]>(() => {
+    const storedClients = localStorage.getItem("clients");
+    return storedClients ? JSON.parse(storedClients) : [
+      { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
+      { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
+    ];
+  });
+  const [quotes, setQuotes] = useState<Quote[]>(() => {
+    const storedQuotes = localStorage.getItem("quotes");
+    return storedQuotes ? JSON.parse(storedQuotes) : [
+      {
+        id: 1,
+        title: "Quote 1",
+        description: "Description for Quote 1",
+        lineItems: [
+          { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+          { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+        ],
+        date: "2023-01-01",
+      },
+      {
+        id: 2,
+        title: "Quote 2",
+        description: "Description for Quote 2",
+        lineItems: [
+          { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+          { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+        ],
+        date: "2023-02-01",
+      },
+    ];
+  });
+  const [invoices, setInvoices] = useState<Invoice[]>(() => {
+    const storedInvoices = localStorage.getItem("invoices");
+    return storedInvoices ? JSON.parse(storedInvoices) : [
+      { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
+      { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
+    ];
+  });
 
-  // Fetch data from APIs when the component mounts
+  // Removed API fetch calls and lazy loading to prevent data reset on mount
+
+  // Persist state to localStorage whenever it changes
   useEffect(() => {
-    const fetchBusinessInfo = async () => {
-      try {
-        const response = await fetch('/api/business-info');
-        if (response.ok) {
-          const data = await response.json();
-          setBusinessInfo(data);
-        } else {
-          console.error('Failed to fetch business info');
-        }
-      } catch (error) {
-        console.error('Error fetching business info:', error);
-      }
-    };
+    localStorage.setItem("businessInfo", JSON.stringify(businessInfo));
+  }, [businessInfo]);
 
-    const fetchClients = async () => {
-      try {
-        const response = await fetch('/api/clients');
-        if (response.ok) {
-          const data = await response.json();
-          setClients(data);
-        } else {
-          console.error('Failed to fetch clients');
-        }
-      } catch (error) {
-        console.error('Error fetching clients:', error);
-      }
-    };
+  useEffect(() => {
+    localStorage.setItem("clients", JSON.stringify(clients));
+  }, [clients]);
 
-    const fetchQuotes = async () => {
-      try {
-        const response = await fetch('/api/quotes');
-        if (response.ok) {
-          const data = await response.json();
-          setQuotes(data);
-        } else {
-          console.error('Failed to fetch quotes');
-        }
-      } catch (error) {
-        console.error('Error fetching quotes:', error);
-      }
-    };
+  useEffect(() => {
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+  }, [quotes]);
 
-    const fetchInvoices = async () => {
-      try {
-        const response = await fetch('/api/invoices');
-        if (response.ok) {
-          const data = await response.json();
-          setInvoices(data);
-        } else {
-          console.error('Failed to fetch invoices');
-        }
-      } catch (error) {
-        console.error('Error fetching invoices:', error);
-      }
-    };
-
-    fetchBusinessInfo();
-    fetchClients();
-    fetchQuotes();
-    fetchInvoices();
-  }, []);
+  useEffect(() => {
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+  }, [invoices]);
 
   // Function to add a new client
   const addClient = (client: Client) => {
@@ -168,80 +135,54 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to add a new quote
-  const addQuote = async (quote: Omit<Quote, 'id' | 'date'>) => {
-    try {
-      const totalAmount = quote.lineItems.reduce(
-        (sum, item) => sum + item.quantity * item.unitPrice,
-        0
-      );
+  const addQuote = (quote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = quote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
 
-      const newQuote = {
-        ...quote,
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        totalAmount,
-      };
+    const newQuote = {
+      ...quote,
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      lineItems: quote.lineItems.map((item, index) => ({
+        id: index + 1,
+        ...item,
+      })),
+      totalAmount,
+    };
 
-      const response = await fetch('/api/quotes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuote),
-      });
-
-      if (response.ok) {
-        const savedQuote = await response.json();
-        setQuotes((prevQuotes) => [...prevQuotes, savedQuote]);
-      } else {
-        console.error('Failed to save the quote');
-      }
-    } catch (error) {
-      console.error('Error saving the quote:', error);
-    }
+    setQuotes((prevQuotes) => [...prevQuotes, newQuote]);
   };
 
   // Function to update a quote
-  const updateQuote = async (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
-    try {
-      const totalAmount = updatedQuote.lineItems.reduce(
-        (sum, item) => sum + item.quantity * item.unitPrice,
-        0
-      );
+  const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = updatedQuote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
 
-      const updatedQuoteWithTotal = {
-        ...updatedQuote,
-        totalAmount,
-      };
+    setQuotes((prevQuotes) =>
+      prevQuotes.map((quote) =>
+        quote.id === id
+          ? {
+              ...quote,
+              ...updatedQuote,
+              lineItems: updatedQuote.lineItems.map((item, index) => ({
+                id: quote.lineItems[index]?.id || index + 1,
+                ...item,
+              })),
+              totalAmount,
+            }
+          : quote
+      )
+    );
 
-      const response = await fetch(`/api/quotes/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedQuoteWithTotal),
-      });
-
-      if (response.ok) {
-        const savedQuote = await response.json();
-        setQuotes((prevQuotes) =>
-          prevQuotes.map((quote) =>
-            quote.id === id ? savedQuote : quote
-          )
-        );
-
-        toast({
-          title: "Quote Updated",
-          description: "The quote has been successfully updated.",
-          variant: "success",
-        });
-        window.location.href = "/dashboard";
-      } else {
-        console.error('Failed to update the quote');
-      }
-    } catch (error) {
-      console.error('Error updating the quote:', error);
-    }
+    toast({
+      title: "Quote Updated",
+      description: "The quote has been successfully updated.",
+      variant: "success",
+    });
   };
 
   // Function to delete a quote
