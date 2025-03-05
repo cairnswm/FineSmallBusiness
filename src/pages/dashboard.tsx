@@ -8,7 +8,7 @@ import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
 import { DashboardContext } from "@/context/DashboardContext";
 
 const Dashboard = () => {
-  const { clients, quotes, deleteQuote } = useContext(DashboardContext);
+  const { clients, quotes, deleteQuote, invoices, deleteInvoice } = useContext(DashboardContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddQuoteClick = () => {
@@ -77,8 +77,34 @@ const Dashboard = () => {
             ))}
           </div>
         </section>
-      </div>
 
+        {/* Invoices Section */}
+        <section>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">Invoices</h2>
+            <Link
+              to="/add-invoice"
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-center"
+            >
+              Add Invoice
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {invoices.map((invoice) => (
+              <InvoiceCard
+                key={invoice.id}
+                id={invoice.id}
+                title={invoice.title}
+                description={invoice.description}
+                amount={invoice.amount}
+                date={invoice.date}
+                onEdit={(id) => console.log(`Edit invoice ${id}`)}
+                onDelete={(id) => deleteInvoice(id)}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 };

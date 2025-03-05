@@ -10,27 +10,12 @@ import AddClientModal from "@/components/dashboard/AddClientModal";
 
 const AddInvoicePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, invoices, updateInvoice } = useContext(DashboardContext);
-  const [formData, setFormData] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    const invoiceId = params.get("id");
-    if (invoiceId) {
-      const existingInvoice = invoices.find((invoice) => invoice.id === Number(invoiceId));
-      if (existingInvoice) {
-        return {
-          title: existingInvoice.title,
-          description: existingInvoice.description,
-          clientId: String(existingInvoice.clientId),
-          amount: existingInvoice.amount,
-        };
-      }
-    }
-    return {
-      title: "",
-      description: "",
-      clientId: "",
-      amount: "",
-    };
+  const { clients, addInvoice } = useContext(DashboardContext);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    clientId: "",
+    amount: "",
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
@@ -62,11 +47,7 @@ const AddInvoicePage: React.FC = () => {
       if (invoiceId) {
         updateInvoice(Number(invoiceId), invoicePayload);
       } else {
-        toast({
-          title: "Error",
-          description: "Adding new invoices is not implemented yet.",
-          variant: "destructive",
-        });
+        addInvoice(invoicePayload);
       }
       navigate("/dashboard");
     } else {
