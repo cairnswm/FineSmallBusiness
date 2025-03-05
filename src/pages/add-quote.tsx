@@ -21,6 +21,11 @@ const AddQuotePage: React.FC = () => {
           title: existingQuote.title,
           description: existingQuote.description,
           clientId: String(existingQuote.clientId),
+          lineItems: existingQuote.lineItems.map((item) => ({
+            description: item.description,
+            quantity: item.quantity,
+            price: item.unitPrice,
+          })),
         };
       }
     }
@@ -28,6 +33,7 @@ const AddQuotePage: React.FC = () => {
       title: "",
       description: "",
       clientId: "",
+      lineItems: [{ description: "", quantity: 1, price: 0 }],
     };
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
