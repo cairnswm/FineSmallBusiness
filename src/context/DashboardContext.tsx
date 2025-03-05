@@ -17,6 +17,7 @@ interface DashboardContextType {
   quotes: Quote[];
   invoices: Invoice[];
   addClient: (client: Client) => void;
+  addQuote: (quote: Quote) => void;
   updateQuote: (id: number, updatedQuote: Quote) => void;
   deleteQuote: (id: number) => void;
   updateInvoice: (id: number, updatedInvoice: Invoice) => void;
@@ -140,6 +141,11 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     setClients((prevClients) => [...prevClients, client]);
   };
 
+  // Function to add a new quote
+  const addQuote = (quote: Quote) => {
+    setQuotes((prevQuotes) => [...prevQuotes, quote]);
+  };
+
   // Function to update a quote
   const updateQuote = (id: number, updatedQuote: Quote) => {
     setQuotes((prevQuotes) =>
@@ -176,6 +182,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         quotes,
         invoices,
         addClient,
+        addQuote,
         updateQuote,
         deleteQuote,
         updateInvoice,
