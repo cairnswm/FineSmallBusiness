@@ -228,6 +228,10 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             quote.id === id ? savedQuote : quote
           )
         );
+        toast({
+          title: "Quote Updated",
+          description: "The quote has been successfully updated.",
+        });
         window.location.href = '/dashboard';
       } else {
         console.error('Failed to update the quote');
