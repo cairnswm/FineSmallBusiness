@@ -112,7 +112,8 @@ const AddQuotePage: React.FC = () => {
         return;
       }
     }
-
+  };
+  
   return (
     <div className="p-6 space-y-6 pb-40">
       <header className="flex justify-between items-center">
