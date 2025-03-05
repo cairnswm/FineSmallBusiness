@@ -24,7 +24,7 @@ const Index = () => {
               asChild
               className="border border-input hover:bg-accent hover:text-accent-foreground px-6 py-3 rounded-lg"
             >
-              <a href="/dashboard">Open App</a>
+              <Link to="/dashboard">Open App</Link>
             </Button>
           </div>
         </section>
