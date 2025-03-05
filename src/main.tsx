@@ -14,6 +14,7 @@ import { DashboardProvider } from "./context/DashboardContext";
 import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
+import AddQuotePage from "./pages/add-quote";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
@@ -25,6 +26,8 @@ createRoot(document.getElementById("root")!).render(
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/add-quote" element={<AddQuotePage />} />
+              <Route path="/edit-quote/:id" element={<AddQuotePage />} />
             </Routes>
           </BrowserRouter>
           <Sonner />

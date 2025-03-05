@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { toast } from "@/hooks/use-toast";
 
 // Create the DashboardContext
 export const DashboardContext = createContext<DashboardContextType | undefined>(undefined);
@@ -17,8 +18,8 @@ interface DashboardContextType {
   quotes: Quote[];
   invoices: Invoice[];
   addClient: (client: Client) => void;
-  addQuote: (quote: Quote) => void;
-  updateQuote: (id: number, updatedQuote: Quote) => void;
+  addQuote: (quote: Omit<Quote, 'id' | 'date'>) => void;
+  updateQuote: (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => void;
   deleteQuote: (id: number) => void;
   updateInvoice: (id: number, updatedInvoice: Invoice) => void;
   deleteInvoice: (id: number) => void;
@@ -41,8 +42,15 @@ interface Quote {
   id: number;
   title: string;
   description: string;
-  amount: string;
+  lineItems: LineItem[];
   date: string;
+}
+
+interface LineItem {
+  id: number;
+  description: string;
+  quantity: number;
+  unitPrice: number;
 }
 interface Invoice {
   id: number;
@@ -64,8 +72,26 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
   ]);
   const [quotes, setQuotes] = useState<Quote[]>([
-    { id: 1, title: "Quote 1", description: "Description for Quote 1", amount: "100.00", date: "2023-01-01" },
-    { id: 2, title: "Quote 2", description: "Description for Quote 2", amount: "200.00", date: "2023-02-01" },
+    {
+      id: 1,
+      title: "Quote 1",
+      description: "Description for Quote 1",
+      lineItems: [
+        { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+        { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+      ],
+      date: "2023-01-01",
+    },
+    {
+      id: 2,
+      title: "Quote 2",
+      description: "Description for Quote 2",
+      lineItems: [
+        { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+        { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+      ],
+      date: "2023-02-01",
+    },
   ]);
   const [invoices, setInvoices] = useState<Invoice[]>([
     { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
@@ -142,15 +168,80 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to add a new quote
-  const addQuote = (quote: Quote) => {
-    setQuotes((prevQuotes) => [...prevQuotes, quote]);
+  const addQuote = async (quote: Omit<Quote, 'id' | 'date'>) => {
+    try {
+      const totalAmount = quote.lineItems.reduce(
+        (sum, item) => sum + item.quantity * item.unitPrice,
+        0
+      );
+
+      const newQuote = {
+        ...quote,
+        id: Date.now(),
+        date: new Date().toISOString().split('T')[0],
+        totalAmount,
+      };
+
+      const response = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newQuote),
+      });
+
+      if (response.ok) {
+        const savedQuote = await response.json();
+        setQuotes((prevQuotes) => [...prevQuotes, savedQuote]);
+      } else {
+        console.error('Failed to save the quote');
+      }
+    } catch (error) {
+      console.error('Error saving the quote:', error);
+    }
   };
 
   // Function to update a quote
-  const updateQuote = (id: number, updatedQuote: Quote) => {
-    setQuotes((prevQuotes) =>
-      prevQuotes.map((quote) => (quote.id === id ? updatedQuote : quote))
-    );
+  const updateQuote = async (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    try {
+      const totalAmount = updatedQuote.lineItems.reduce(
+        (sum, item) => sum + item.quantity * item.unitPrice,
+        0
+      );
+
+      const updatedQuoteWithTotal = {
+        ...updatedQuote,
+        totalAmount,
+      };
+
+      const response = await fetch(`/api/quotes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedQuoteWithTotal),
+      });
+
+      if (response.ok) {
+        const savedQuote = await response.json();
+        setQuotes((prevQuotes) =>
+          prevQuotes.map((quote) =>
+            quote.id === id ? savedQuote : quote
+          )
+        );
+
+        toast({
+          title: "Quote Updated",
+          description: "The quote has been successfully updated.",
+          variant: "success",
+        });
+        window.location.href = "/dashboard";
+      } else {
+        console.error('Failed to update the quote');
+      }
+    } catch (error) {
+      console.error('Error updating the quote:', error);
+    }
   };
 
   // Function to delete a quote
