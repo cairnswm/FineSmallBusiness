@@ -157,6 +157,11 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 
   // Function to update a quote
   const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = updatedQuote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
+
     setQuotes((prevQuotes) =>
       prevQuotes.map((quote) =>
         quote.id === id
@@ -167,6 +172,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
                 id: quote.lineItems[index]?.id || index + 1,
                 ...item,
               })),
+              totalAmount,
             }
           : quote
       )
