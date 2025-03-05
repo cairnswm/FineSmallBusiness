@@ -117,7 +117,7 @@ const AddQuotePage: React.FC = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 pb-20">
+    <div className="p-6 space-y-6 pb-40">
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Quote" : "Add New Quote"}</h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
@@ -151,7 +151,7 @@ const AddQuotePage: React.FC = () => {
               onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
               placeholder="Enter quote description"
               required
-              className="textarea h-32"
+              className="textarea h-32 border border-gray-300 rounded-md p-2"
             />
           </FormControl>
           <FormMessage />
@@ -223,7 +223,7 @@ const AddQuotePage: React.FC = () => {
 
         <div className="space-y-4">
           <div className="text-right text-lg font-semibold">
-            Total: ${lineItems.reduce((total, item) => total + item.quantity * item.price, 0).toFixed(2)}
+            Total: ${calculateTotalAmount().toFixed(2)}
           </div>
           <div className="flex justify-end space-x-4">
             <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>

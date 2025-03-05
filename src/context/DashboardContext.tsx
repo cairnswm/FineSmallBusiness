@@ -201,19 +201,40 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to update a quote
-  const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
-    const totalAmount = updatedQuote.lineItems.reduce(
-      (sum, item) => sum + item.quantity * item.unitPrice,
-      0
-    );
+  const updateQuote = async (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
+    try {
+      const totalAmount = updatedQuote.lineItems.reduce(
+        (sum, item) => sum + item.quantity * item.unitPrice,
+        0
+      );
 
-    setQuotes((prevQuotes) =>
-      prevQuotes.map((quote) =>
-        quote.id === id
-          ? { ...quote, ...updatedQuote, totalAmount }
-          : quote
-      )
-    );
+      const updatedQuoteWithTotal = {
+        ...updatedQuote,
+        totalAmount,
+      };
+
+      const response = await fetch(`/api/quotes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedQuoteWithTotal),
+      });
+
+      if (response.ok) {
+        const savedQuote = await response.json();
+        setQuotes((prevQuotes) =>
+          prevQuotes.map((quote) =>
+            quote.id === id ? savedQuote : quote
+          )
+        );
+        window.location.href = '/dashboard';
+      } else {
+        console.error('Failed to update the quote');
+      }
+    } catch (error) {
+      console.error('Error updating the quote:', error);
+    }
   };
 
   // Function to delete a quote
