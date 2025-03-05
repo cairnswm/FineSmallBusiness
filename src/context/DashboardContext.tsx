@@ -168,37 +168,20 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to add a new quote
-  const addQuote = async (quote: Omit<Quote, 'id' | 'date'>) => {
-    try {
-      const totalAmount = quote.lineItems.reduce(
-        (sum, item) => sum + item.quantity * item.unitPrice,
-        0
-      );
+  const addQuote = (quote: Omit<Quote, 'id' | 'date'>) => {
+    const totalAmount = quote.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
 
-      const newQuote = {
-        ...quote,
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        totalAmount,
-      };
+    const newQuote = {
+      ...quote,
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      totalAmount,
+    };
 
-      const response = await fetch('/api/quotes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuote),
-      });
-
-      if (response.ok) {
-        const savedQuote = await response.json();
-        setQuotes((prevQuotes) => [...prevQuotes, savedQuote]);
-      } else {
-        console.error('Failed to save the quote');
-      }
-    } catch (error) {
-      console.error('Error saving the quote:', error);
-    }
+    setQuotes((prevQuotes) => [...prevQuotes, newQuote]);
   };
 
   // Function to update a quote
