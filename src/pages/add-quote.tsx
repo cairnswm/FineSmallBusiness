@@ -103,6 +103,12 @@ const AddQuotePage: React.FC = () => {
         addQuote(quotePayload);
       }
       navigate("/dashboard");
+    } else {
+      toast({
+        title: "Error",
+        description: "Please fill out all required fields.",
+        variant: "destructive",
+      });
     }
   };
   
