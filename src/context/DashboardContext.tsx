@@ -98,69 +98,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
   ]);
 
-  // Fetch data from APIs when the component mounts
-  useEffect(() => {
-    const fetchBusinessInfo = async () => {
-      try {
-        const response = await fetch('/api/business-info');
-        if (response.ok) {
-          const data = await response.json();
-          setBusinessInfo(data);
-        } else {
-          console.error('Failed to fetch business info');
-        }
-      } catch (error) {
-        console.error('Error fetching business info:', error);
-      }
-    };
-
-    const fetchClients = async () => {
-      try {
-        const response = await fetch('/api/clients');
-        if (response.ok) {
-          const data = await response.json();
-          setClients(data);
-        } else {
-          console.error('Failed to fetch clients');
-        }
-      } catch (error) {
-        console.error('Error fetching clients:', error);
-      }
-    };
-
-    const fetchQuotes = async () => {
-      try {
-        const response = await fetch('/api/quotes');
-        if (response.ok) {
-          const data = await response.json();
-          setQuotes(data);
-        } else {
-          console.error('Failed to fetch quotes');
-        }
-      } catch (error) {
-        console.error('Error fetching quotes:', error);
-      }
-    };
-
-    const fetchInvoices = async () => {
-      try {
-        const response = await fetch('/api/invoices');
-        if (response.ok) {
-          const data = await response.json();
-          setInvoices(data);
-        } else {
-          console.error('Failed to fetch invoices');
-        }
-      } catch (error) {
-        console.error('Error fetching invoices:', error);
-      }
-    };
-
-    fetchBusinessInfo();
-    fetchClients();
-    fetchQuotes();
-    fetchInvoices();
-  }, []);
+  // Removed API fetch calls and lazy loading to prevent data reset on mount
 
   // Function to add a new client
   const addClient = (client: Client) => {
