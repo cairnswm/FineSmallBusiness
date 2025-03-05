@@ -60,45 +60,74 @@ interface Invoice {
   date: string;
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>({
-    name: "Mock Business",
-    email: "mock@business.com",
-    phone: "123-456-7890",
-    address: "123 Mock Street, Mock City",
-    website: "https://mockbusiness.com",
+  const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(() => {
+    const storedBusinessInfo = localStorage.getItem("businessInfo");
+    return storedBusinessInfo ? JSON.parse(storedBusinessInfo) : {
+      name: "Mock Business",
+      email: "mock@business.com",
+      phone: "123-456-7890",
+      address: "123 Mock Street, Mock City",
+      website: "https://mockbusiness.com",
+    };
   });
-  const [clients, setClients] = useState<Client[]>([
-    { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
-  ]);
-  const [quotes, setQuotes] = useState<Quote[]>([
-    {
-      id: 1,
-      title: "Quote 1",
-      description: "Description for Quote 1",
-      lineItems: [
-        { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
-        { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
-      ],
-      date: "2023-01-01",
-    },
-    {
-      id: 2,
-      title: "Quote 2",
-      description: "Description for Quote 2",
-      lineItems: [
-        { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
-        { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
-      ],
-      date: "2023-02-01",
-    },
-  ]);
-  const [invoices, setInvoices] = useState<Invoice[]>([
-    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
-    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
-  ]);
+  const [clients, setClients] = useState<Client[]>(() => {
+    const storedClients = localStorage.getItem("clients");
+    return storedClients ? JSON.parse(storedClients) : [
+      { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
+      { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
+    ];
+  });
+  const [quotes, setQuotes] = useState<Quote[]>(() => {
+    const storedQuotes = localStorage.getItem("quotes");
+    return storedQuotes ? JSON.parse(storedQuotes) : [
+      {
+        id: 1,
+        title: "Quote 1",
+        description: "Description for Quote 1",
+        lineItems: [
+          { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+          { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+        ],
+        date: "2023-01-01",
+      },
+      {
+        id: 2,
+        title: "Quote 2",
+        description: "Description for Quote 2",
+        lineItems: [
+          { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+          { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+        ],
+        date: "2023-02-01",
+      },
+    ];
+  });
+  const [invoices, setInvoices] = useState<Invoice[]>(() => {
+    const storedInvoices = localStorage.getItem("invoices");
+    return storedInvoices ? JSON.parse(storedInvoices) : [
+      { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
+      { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
+    ];
+  });
 
   // Removed API fetch calls and lazy loading to prevent data reset on mount
+
+  // Persist state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("businessInfo", JSON.stringify(businessInfo));
+  }, [businessInfo]);
+
+  useEffect(() => {
+    localStorage.setItem("clients", JSON.stringify(clients));
+  }, [clients]);
+
+  useEffect(() => {
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+  }, [quotes]);
+
+  useEffect(() => {
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+  }, [invoices]);
 
   // Function to add a new client
   const addClient = (client: Client) => {
