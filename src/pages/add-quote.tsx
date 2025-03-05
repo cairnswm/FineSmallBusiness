@@ -33,12 +33,11 @@ const AddQuotePage: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.title && formData.description && formData.amount && formData.clientId) {
+    if (formData.title && formData.description && formData.clientId) {
       const newQuote = {
         id: Date.now(),
         title: formData.title,
         description: formData.description,
-        amount: formData.amount,
         date: new Date().toISOString().split("T")[0],
         clientId: Number(formData.clientId),
       };
@@ -52,7 +51,7 @@ const AddQuotePage: React.FC = () => {
   return (
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Add New Quote</h1>
+        <h1 className="text-2xl font-bold">{formData.id ? "Edit Quote" : "Add New Quote"}</h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
           Back
         </Button>
@@ -77,29 +76,14 @@ const AddQuotePage: React.FC = () => {
         <FormItem>
           <FormLabel htmlFor="description">Description</FormLabel>
           <FormControl>
-            <Input
+            <textarea
               id="description"
               name="description"
               value={formData.description}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
               placeholder="Enter quote description"
               required
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-
-        <FormItem>
-          <FormLabel htmlFor="amount">Amount</FormLabel>
-          <FormControl>
-            <Input
-              id="amount"
-              name="amount"
-              type="number"
-              value={formData.amount}
-              onChange={handleInputChange}
-              placeholder="Enter quote amount"
-              required
+              className="textarea"
             />
           </FormControl>
           <FormMessage />

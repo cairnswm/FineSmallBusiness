@@ -27,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-quote" element={<AddQuotePage />} />
+              <Route path="/edit-quote/:id" element={<AddQuotePage />} />
             </Routes>
           </BrowserRouter>
           <Sonner />
