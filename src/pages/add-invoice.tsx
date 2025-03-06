@@ -38,11 +38,11 @@ const AddInvoicePage: React.FC = () => {
     const invoiceId = params.get("id");
     if (invoiceId) {
       const existingInvoice = invoices.find((invoice) => invoice.id === Number(invoiceId));
-      if (existingInvoice && existingInvoice.lineItems) {
+      if (existingInvoice && Array.isArray(existingInvoice.lineItems)) {
         return existingInvoice.lineItems.map((item) => ({
-          description: item.description,
-          quantity: item.quantity,
-          price: item.unitPrice,
+          description: item.description || "",
+          quantity: item.quantity || 1,
+          price: item.unitPrice || 0,
         }));
       }
     }
