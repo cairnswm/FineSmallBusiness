@@ -17,7 +17,7 @@ const AddInvoicePage: React.FC = () => {
     amount: "",
     clientId: "",
   });
-  const [lineItems, setLineItems] = useState([{ description: "", quantity: 1, price: 0 }]);
+  const [lineItems, setLineItems] = useState(() => []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,15 +31,15 @@ const AddInvoicePage: React.FC = () => {
           amount: existingInvoice.amount,
           clientId: String(existingInvoice.clientId),
         });
-        if (Array.isArray(existingInvoice.lineItems)) {
-          setLineItems(
-            existingInvoice.lineItems.map((item) => ({
-              description: item.description || "",
-              quantity: item.quantity || 1,
-              price: item.unitPrice || 0,
-            }))
-          );
-        }
+        setLineItems(
+          Array.isArray(existingInvoice.lineItems)
+            ? existingInvoice.lineItems.map((item) => ({
+                description: item.description || "",
+                quantity: item.quantity || 1,
+                price: item.unitPrice || 0,
+              }))
+            : []
+        );
       }
     }
   }, [invoices]);
@@ -68,6 +68,8 @@ const AddInvoicePage: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
   const handleClientSelect = (value: string) => {
     if (value === "add-new") {
@@ -158,7 +160,7 @@ const AddInvoicePage: React.FC = () => {
         <FormItem>
           <FormLabel>Line Items</FormLabel>
           <div className="space-y-4">
-            {lineItems.map((item, index) => (
+            {Array.isArray(lineItems) && lineItems.map((item, index) => (
               <div key={index} className="flex space-x-4 items-center">
                 <Input
                   name={`description-${index}`}
