@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import BusinessInfo from "@/components/dashboard/BusinessInfo";
@@ -6,10 +6,14 @@ import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
 import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
-import { DashboardContext } from "@/context/DashboardContext";
+import { useQuoteContext } from "@/context/QuoteContext";
+import { useInvoiceContext } from "@/context/InvoiceContext";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const Dashboard = () => {
-  const { clients, quotes, invoices, deleteQuote, deleteInvoice } = useContext(DashboardContext);
+  const { clients } = useDashboardContext();
+  const { quotes, deleteQuote } = useQuoteContext();
+  const { invoices, deleteInvoice } = useInvoiceContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddQuoteClick = () => {

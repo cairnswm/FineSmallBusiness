@@ -12,6 +12,8 @@ import { TooltipProvider } from "./components/ui/tooltip";
 import AddInvoicePage from "./pages/add-invoice";
 import { ThemeProvider } from "./components/layout/theme-provider";
 import { DashboardProvider } from "./context/DashboardContext";
+import { QuoteProvider } from "./context/QuoteContext";
+import { InvoiceProvider } from "./context/InvoiceContext";
 import "./index.css";
 import Index from "./pages";
 import Dashboard from "./pages/dashboard";
@@ -24,13 +26,17 @@ createRoot(document.getElementById("root")!).render(
       <ThemeProvider>
         <BrowserRouter>
           <DashboardProvider>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/add-quote" element={<AddQuotePage />} />
-              <Route path="/edit-quote/:id" element={<AddQuotePage />} />
-              <Route path="/add-invoice" element={<AddInvoicePage />} />
-            </Routes>
+            <QuoteProvider>
+              <InvoiceProvider>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/add-quote" element={<AddQuotePage />} />
+                  <Route path="/edit-quote/:id" element={<AddQuotePage />} />
+                  <Route path="/add-invoice" element={<AddInvoicePage />} />
+                </Routes>
+              </InvoiceProvider>
+            </QuoteProvider>
           </DashboardProvider>
           <Sonner />
           <Toaster />

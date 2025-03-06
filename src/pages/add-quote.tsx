@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { DashboardContext } from "@/context/DashboardContext";
+import { useQuoteContext } from "@/context/QuoteContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -10,7 +10,7 @@ import AddClientModal from "@/components/dashboard/AddClientModal";
 
 const AddQuotePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, quotes, addQuote, updateQuote } = useContext(DashboardContext);
+  const { clients, quotes, addQuote, updateQuote } = useQuoteContext();
   const [formData, setFormData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const quoteId = params.get("id");
