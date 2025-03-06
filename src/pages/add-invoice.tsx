@@ -62,10 +62,11 @@ const AddInvoicePage: React.FC = () => {
       if (invoiceId) {
         updateInvoice(Number(invoiceId), invoicePayload);
       } else {
+        addInvoice(invoicePayload);
         toast({
-          title: "Error",
-          description: "Adding new invoices is not implemented yet.",
-          variant: "destructive",
+          title: "Success",
+          description: "Invoice added successfully.",
+          variant: "success",
         });
       }
       navigate("/dashboard");
