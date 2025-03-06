@@ -28,13 +28,7 @@ const Dashboard = () => {
   };
 
   const handleEditClient = (id: number) => {
-    setSelectedClientId(id);
-    setIsClientModalOpen(true);
-  };
-
-  const handleCloseClientModal = () => {
-    setSelectedClientId(null);
-    setIsClientModalOpen(false);
+    navigate(`/add-edit-client?id=${id}`);
   };
 
   return (
@@ -65,8 +59,7 @@ const Dashboard = () => {
                   phone={client.phone}
                   address={client.address}
                   status={client.status}
-                  onEdit={handleEditClient}
-                  onDelete={(id) => console.log(`Delete client ${id}`)}
+                  onEdit={(id) => navigate(`/add-edit-client?id=${id}`)}
                 />
               ))}
           </div>
