@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import BusinessInfo from "@/components/dashboard/BusinessInfo";
+import CollapsibleSection from "@/components/dashboard/CollapsibleSection";
 import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
