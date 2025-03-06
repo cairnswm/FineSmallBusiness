@@ -33,6 +33,9 @@ const ClientCard: React.FC<ClientCardProps> = ({ id, name, email, phone, address
         <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
           Edit
         </Button>
+        <Button variant="outline" size="sm" onClick={() => onDelete(id)}>
+          Delete
+        </Button>
       </CardFooter>
     </Card>
   );

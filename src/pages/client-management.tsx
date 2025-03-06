@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDashboardContext } from "@/context/DashboardContext";
 import ClientCard from "@/components/dashboard/ClientCard";
-import AddClientModal from "@/components/dashboard/AddClientModal";
-import EditClientModal from "@/components/dashboard/EditClientModal";
+import AddEditClientCard from "@/components/dashboard/AddEditClientCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -12,8 +11,8 @@ const ClientManagement = () => {
   const { clients } = useDashboardContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [editClientId, setEditClientId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -24,15 +23,18 @@ const ClientManagement = () => {
   };
 
   const handleAddClient = () => {
-    setIsAddModalOpen(true);
+    setSelectedClientId(null);
+    setIsModalOpen(true);
   };
 
   const handleEditClient = (id: number) => {
-    setEditClientId(id);
+    setSelectedClientId(id);
+    setIsModalOpen(true);
   };
 
   const handleCloseEditModal = () => {
-    setEditClientId(null);
+    setSelectedClientId(null);
+    setIsModalOpen(false);
   };
 
   const filteredClients = clients.filter((client) => {
@@ -108,13 +110,11 @@ const ClientManagement = () => {
         ))}
       </div>
 
-      <AddClientModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
-      {editClientId !== null && (
-        <EditClientModal
-          clientId={editClientId}
-          onClose={handleCloseEditModal}
-        />
-      )}
+      <AddEditClientCard
+        isOpen={isModalOpen}
+        onClose={handleCloseEditModal}
+        clientId={selectedClientId}
+      />
     </div>
   );
 };
