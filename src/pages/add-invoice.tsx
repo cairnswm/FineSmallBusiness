@@ -46,13 +46,7 @@ const AddInvoicePage: React.FC = () => {
         }));
       }
     }
-    return existingInvoice?.lineItems?.length
-      ? existingInvoice.lineItems.map((item) => ({
-          description: item.description,
-          quantity: item.quantity,
-          price: item.unitPrice,
-        }))
-      : [{ description: "", quantity: 1, price: 0 }];
+    return [{ description: "", quantity: 1, price: 0 }];
   });
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
