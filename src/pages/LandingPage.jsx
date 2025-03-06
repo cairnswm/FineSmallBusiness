@@ -1,5 +1,6 @@
 // Update this page (the content is just a fallback if you fail to update the page). Always include w-full and min-h-screen classes in the main element.
 import { Button } from "@/components/ui/button";
+import { Link } from 'react-router-dom';
 import FeatureCard from "@/components/landing/FeatureCard";
 import PricingCard from "@/components/landing/PricingCard";
 import WaitingListModal from "@/components/landing/WaitingListModal";
@@ -24,7 +25,7 @@ const LandingPage = () => {
               asChild
               className="border border-input hover:bg-accent hover:text-accent-foreground px-6 py-3 rounded-lg"
             >
-              <a href="/dashboard">Open App</a>
+              <Link to="/dashboard" className="font-medium text-white hover:text-white/80 transition-colors">Open App</Link>
             </Button>
           </div>
         </section>

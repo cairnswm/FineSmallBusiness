@@ -9,7 +9,7 @@ interface InvoiceCardProps {
 }
 
 const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
-  const { invoices, deleteInvoice } = useInvoiceContext();
+  const { invoices, deleteInvoice, exportInvoiceToPdf } = useInvoiceContext();
   const invoice = invoices.find((inv) => inv.id === id);
 
   if (!invoice) {
@@ -41,8 +41,13 @@ const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
         >
           <Link to={`/add-invoice?id=${invoice.id}`}>Edit</Link>
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => deleteInvoice(invoice.id)} aria-label={`Delete ${invoice.title}`}>
-          Delete
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => exportInvoiceToPdf(invoice)}
+          aria-label={`Export ${invoice.title} to PDF`}
+        >
+          Export PDF
         </Button>
       </CardFooter>
     </Card>
