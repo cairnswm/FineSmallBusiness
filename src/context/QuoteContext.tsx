@@ -7,6 +7,16 @@ interface QuoteContextType {
   updateQuote: (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => void;
   deleteQuote: (id: number) => void;
 }
+import { generateQuotePdf } from "../utils/pdfGenerator";
+
+const exportQuoteToPdf = (quoteId: number) => {
+  const quote = quotes.find((q) => q.id === quoteId);
+  if (quote) {
+    generateQuotePdf(quote);
+  } else {
+    console.error(`Quote with ID ${quoteId} not found.`);
+  }
+};
 
 interface Quote {
   id: number;
@@ -100,7 +110,7 @@ const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   return (
-    <QuoteContext.Provider value={{ quotes, addQuote, updateQuote, deleteQuote }}>
+    <QuoteContext.Provider value={{ quotes, addQuote, updateQuote, deleteQuote, exportQuoteToPdf }}>
       {children}
     </QuoteContext.Provider>
   );

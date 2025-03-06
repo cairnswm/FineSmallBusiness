@@ -20,7 +20,7 @@ interface QuoteCardProps {
 }
 
 const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems, date }) => {
-  const { deleteQuote } = useQuoteContext();
+  const { deleteQuote, exportQuoteToPdf } = useQuoteContext();
   const totalAmount = lineItems.reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
 
   return (
@@ -44,6 +44,16 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems
         </Button>
         <Button variant="destructive" size="sm" onClick={() => deleteQuote(id)} aria-label={`Delete ${title}`}>
           Delete
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            exportQuoteToPdf({ id, title, description, lineItems, date })
+          }
+          aria-label={`Export ${title} to PDF`}
+        >
+          Export PDF
         </Button>
       </CardFooter>
     </Card>
