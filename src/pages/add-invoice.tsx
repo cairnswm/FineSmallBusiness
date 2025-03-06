@@ -209,7 +209,7 @@ const AddInvoicePage: React.FC = () => {
                   : "Select a client"}
               </SelectTrigger>
               <SelectContent>
-                {clients.map((client) => (
+                {clients && clients.map((client) => (
                   <SelectItem key={client.id} value={String(client.id)}>
                     {client.name}
                   </SelectItem>
