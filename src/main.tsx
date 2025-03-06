@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import AddInvoicePage from "./pages/add-invoice";
+import AddEditClientPage from "./pages/add-edit-client";
 import SettingsPage from "./pages/settings";
 import { ThemeProvider } from "./components/layout/theme-provider";
 import { DashboardProvider } from "./context/DashboardContext";
@@ -39,6 +40,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/add-invoice" element={<AddInvoicePage />} />
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/clients" element={<ClientManagement />} />
+                  <Route path="/add-edit-client" element={<AddEditClientPage />} />
                   <Route path="/quotes" element={<Dashboard />} />
                   <Route path="/invoices" element={<Dashboard />} />
                 </Routes>

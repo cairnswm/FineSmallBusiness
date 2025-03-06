@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import BusinessInfo from "@/components/dashboard/BusinessInfo";
 import ClientCard from "@/components/dashboard/ClientCard";
@@ -14,49 +14,42 @@ const Dashboard = () => {
   const { clients } = useDashboardContext();
   const { quotes } = useQuoteContext();
   const { invoices } = useInvoiceContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleAddQuoteClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleEditClient = (id: number) => {
+    navigate(`/add-edit-client?id=${id}`);
   };
 
   return (
     <div className="flex-1 flex flex-col">
-      {/* Header */}
       <DashboardHeader />
 
-      {/* Content */}
       <div className="p-6 space-y-6">
-        {/* Business Info Section */}
         <section>
           <h2 className="text-2xl font-bold mb-4">Business Information</h2>
           <BusinessInfo />
         </section>
 
-        {/* Clients Section */}
         <section>
           <h2 className="text-2xl font-bold mb-4">Clients</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {clients.map((client) => (
-              <ClientCard
-                key={client.id}
-                id={client.id}
-                name={client.name}
-                email={client.email}
-                phone={client.phone}
-                address={client.address}
-                onEdit={(id) => console.log(`Edit client ${id}`)}
-                onDelete={(id) => console.log(`Delete client ${id}`)}
-              />
-            ))}
+            {clients
+              .filter((client) => client.status === "active")
+              .map((client) => (
+                <ClientCard
+                  key={client.id}
+                  id={client.id}
+                  name={client.name}
+                  email={client.email}
+                  phone={client.phone}
+                  address={client.address}
+                  status={client.status}
+                  onEdit={handleEditClient}
+                />
+              ))}
           </div>
         </section>
 
-        {/* Quotes Section */}
         <section>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Quotes</h2>
@@ -81,7 +74,6 @@ const Dashboard = () => {
           </div>
         </section>
 
-        {/* Invoices Section */}
         <section>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Invoices</h2>
@@ -108,7 +100,6 @@ const Dashboard = () => {
           </div>
         </section>
       </div>
-
     </div>
   );
 };
