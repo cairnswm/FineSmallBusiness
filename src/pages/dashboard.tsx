@@ -5,6 +5,7 @@ import BusinessInfo from "@/components/dashboard/BusinessInfo";
 import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
+import InvoiceCard from "@/components/dashboard/InvoiceCard";
 import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
 import { useQuoteContext } from "@/context/QuoteContext";
 import { useInvoiceContext } from "@/context/InvoiceContext";
@@ -12,8 +13,8 @@ import { useDashboardContext } from "@/context/DashboardContext";
 
 const Dashboard = () => {
   const { clients } = useDashboardContext();
-  const { quotes, deleteQuote } = useQuoteContext();
-  const { invoices, deleteInvoice } = useInvoiceContext();
+  const { quotes } = useQuoteContext();
+  const { invoices } = useInvoiceContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddQuoteClick = () => {
@@ -76,8 +77,6 @@ const Dashboard = () => {
                 description={quote.description}
                 lineItems={quote.lineItems}
                 date={quote.date}
-                onEdit={(id) => console.log(`Edit quote ${id}`)}
-                onDelete={(id) => deleteQuote(id)}
               />
             ))}
           </div>

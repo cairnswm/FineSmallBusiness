@@ -44,7 +44,10 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [invoices, setInvoices] = useState<Invoice[]>(dashboardInvoices ? dashboardInvoices.map(invoice => ({
     ...invoice,
     lineItems: invoice.lineItems || [],
-  })) : []);
+  })) : [
+    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", lineItems: [], date: "2023-03-01" },
+    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", lineItems: [], date: "2023-04-01" },
+  ]);
 
   useEffect(() => {
     setInvoices(dashboardInvoices);
