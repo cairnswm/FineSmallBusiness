@@ -36,28 +36,40 @@ export const useInvoiceContext = (): InvoiceContextType => {
 const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [invoices, setInvoices] = useState<Invoice[]>(() => {
     const storedInvoices = localStorage.getItem("invoices");
-    return storedInvoices ? JSON.parse(storedInvoices) : [
-      {
-        id: 1,
-        title: "Mock Invoice 1",
-        description: "Description for Mock Invoice 1",
-        lineItems: [
-          { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
-          { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
-        ],
-        date: "2023-01-01",
-      },
-      {
-        id: 2,
-        title: "Mock Invoice 2",
-        description: "Description for Mock Invoice 2",
-        lineItems: [
-          { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
-          { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
-        ],
-        date: "2023-02-01",
-      },
-    ];
+    return storedInvoices
+      ? JSON.parse(storedInvoices)
+      : [
+          {
+            id: 1,
+            title: "Mock Invoice 1",
+            description: "Description for Mock Invoice 1",
+            lineItems: Array.isArray([
+              { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+              { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+            ])
+              ? [
+                  { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+                  { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+                ]
+              : [],
+            date: "2023-01-01",
+          },
+          {
+            id: 2,
+            title: "Mock Invoice 2",
+            description: "Description for Mock Invoice 2",
+            lineItems: Array.isArray([
+              { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+              { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+            ])
+              ? [
+                  { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+                  { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+                ]
+              : [],
+            date: "2023-02-01",
+          },
+        ];
   });
 
   useEffect(() => {
