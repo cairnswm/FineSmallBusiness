@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useInvoiceContext } from "@/context/InvoiceContext";
@@ -11,27 +11,39 @@ import AddClientModal from "@/components/dashboard/AddClientModal";
 const AddInvoicePage: React.FC = () => {
   const navigate = useNavigate();
   const { clients, invoices, addInvoice, updateInvoice } = useInvoiceContext();
-  const [formData, setFormData] = useState(() => {
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    amount: "",
+    clientId: "",
+  });
+  const [lineItems, setLineItems] = useState([{ description: "", quantity: 1, price: 0 }]);
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const invoiceId = params.get("id");
     if (invoiceId) {
       const existingInvoice = invoices.find((invoice) => invoice.id === Number(invoiceId));
       if (existingInvoice) {
-        return {
+        setFormData({
           title: existingInvoice.title,
           description: existingInvoice.description,
           amount: existingInvoice.amount,
           clientId: String(existingInvoice.clientId),
-        };
+        });
+        if (Array.isArray(existingInvoice.lineItems)) {
+          setLineItems(
+            existingInvoice.lineItems.map((item) => ({
+              description: item.description || "",
+              quantity: item.quantity || 1,
+              price: item.unitPrice || 0,
+            }))
+          );
+        }
       }
     }
-    return {
-      title: "",
-      description: "",
-      amount: "",
-      clientId: "",
-    };
-  });
+  }, [invoices]);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [lineItems, setLineItems] = useState(() => {
     const params = new URLSearchParams(window.location.search);
