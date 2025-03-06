@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useInvoiceContext } from "@/context/InvoiceContext";
+import { useDashboardContext } from "@/context/DashboardContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
@@ -10,14 +11,15 @@ import AddClientModal from "@/components/dashboard/AddClientModal";
 
 const AddInvoicePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, invoices, addInvoice, updateInvoice } = useInvoiceContext();
+  const { invoices, addInvoice, updateInvoice } = useInvoiceContext();
+  const { clients } = useDashboardContext();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     amount: "",
     clientId: "",
   });
-  const [lineItems, setLineItems] = useState(() => []);
+  const [lineItems, setLineItems] = useState([]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
