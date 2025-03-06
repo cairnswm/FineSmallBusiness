@@ -89,6 +89,12 @@ const ClientManagement = () => {
             address={client.address}
             onEdit={handleEditClient}
             onDelete={(id) => console.log(`Delete client ${id}`)}
+            status={client.status}
+            onToggleStatus={(id) =>
+              client.status === "active"
+                ? updateClientStatus(id, "inactive")
+                : updateClientStatus(id, "active")
+            }
           />
         ))}
       </div>
