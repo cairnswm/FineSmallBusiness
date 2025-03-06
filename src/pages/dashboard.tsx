@@ -51,6 +51,7 @@ const Dashboard = () => {
                   email={client.email}
                   phone={client.phone}
                   address={client.address}
+                  status={client.status}
                   onEdit={(id) => console.log(`Edit client ${id}`)}
                   onDelete={(id) => console.log(`Delete client ${id}`)}
                 />
