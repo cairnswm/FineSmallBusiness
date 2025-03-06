@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 import { Link } from 'react-router-dom';
+import { useQuoteContext } from '@/context/QuoteContext';
 
 interface LineItem {
   id: number;
@@ -17,11 +17,10 @@ interface QuoteCardProps {
   description: string;
   lineItems: LineItem[];
   date: string;
-  onEdit: (id: number) => void;
-  onDelete: (id: number) => void;
 }
 
-const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems, date, onEdit, onDelete }) => {
+const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems, date }) => {
+  const { deleteQuote } = useQuoteContext();
   const totalAmount = lineItems.reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
 
   return (
@@ -43,7 +42,7 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems
         >
           <Link to={`/add-quote?id=${id}`}>Edit</Link>
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => onDelete(id)} aria-label={`Delete ${title}`}>
+        <Button variant="destructive" size="sm" onClick={() => deleteQuote(id)} aria-label={`Delete ${title}`}>
           Delete
         </Button>
       </CardFooter>

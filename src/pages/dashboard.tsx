@@ -1,14 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import BusinessInfo from "@/components/dashboard/BusinessInfo";
 import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
+import InvoiceCard from "@/components/dashboard/InvoiceCard";
 import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
-import { DashboardContext } from "@/context/DashboardContext";
+import { useQuoteContext } from "@/context/QuoteContext";
+import { useInvoiceContext } from "@/context/InvoiceContext";
+import { useDashboardContext } from "@/context/DashboardContext";
 
 const Dashboard = () => {
-  const { clients, quotes, deleteQuote } = useContext(DashboardContext);
+  const { clients } = useDashboardContext();
+  const { quotes } = useQuoteContext();
+  const { invoices } = useInvoiceContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddQuoteClick = () => {
@@ -71,10 +76,35 @@ const Dashboard = () => {
                 description={quote.description}
                 lineItems={quote.lineItems}
                 date={quote.date}
-                onEdit={(id) => console.log(`Edit quote ${id}`)}
-                onDelete={(id) => deleteQuote(id)}
               />
             ))}
+          </div>
+        </section>
+
+        {/* Invoices Section */}
+        <section>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">Invoices</h2>
+            <Link
+              to="/add-invoice"
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 text-center"
+            >
+              Add Invoice
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Array.isArray(invoices) && invoices.length > 0 ? (
+              invoices.map((invoice) => (
+                <InvoiceCard
+                  key={invoice.id}
+                  id={invoice.id}
+                />
+              ))
+            ) : (
+              <div className="text-center text-muted-foreground">
+                No invoices available.
+              </div>
+            )}
           </div>
         </section>
       </div>

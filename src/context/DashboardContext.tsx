@@ -15,14 +15,8 @@ export const useDashboardContext = (): DashboardContextType => {
 interface DashboardContextType {
   businessInfo: BusinessInfo | null;
   clients: Client[];
-  quotes: Quote[];
-  invoices: Invoice[];
   addClient: (client: Client) => void;
-  addQuote: (quote: Omit<Quote, 'id' | 'date'>) => void;
-  updateQuote: (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => void;
-  deleteQuote: (id: number) => void;
-  updateInvoice: (id: number, updatedInvoice: Invoice) => void;
-  deleteInvoice: (id: number) => void;
+  addInvoice: (invoice: Omit<Invoice, 'id'>) => void;
 }
 interface BusinessInfo {
   name: string;
@@ -56,7 +50,7 @@ interface Invoice {
   id: number;
   title: string;
   description: string;
-  amount: string;
+  lineItems: LineItem[];
   date: string;
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -77,38 +71,6 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
     ];
   });
-  const [quotes, setQuotes] = useState<Quote[]>(() => {
-    const storedQuotes = localStorage.getItem("quotes");
-    return storedQuotes ? JSON.parse(storedQuotes) : [
-      {
-        id: 1,
-        title: "Quote 1",
-        description: "Description for Quote 1",
-        lineItems: [
-          { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
-          { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
-        ],
-        date: "2023-01-01",
-      },
-      {
-        id: 2,
-        title: "Quote 2",
-        description: "Description for Quote 2",
-        lineItems: [
-          { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
-          { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
-        ],
-        date: "2023-02-01",
-      },
-    ];
-  });
-  const [invoices, setInvoices] = useState<Invoice[]>(() => {
-    const storedInvoices = localStorage.getItem("invoices");
-    return storedInvoices ? JSON.parse(storedInvoices) : [
-      { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
-      { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
-    ];
-  });
 
   // Removed API fetch calls and lazy loading to prevent data reset on mount
 
@@ -121,13 +83,6 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     localStorage.setItem("clients", JSON.stringify(clients));
   }, [clients]);
 
-  useEffect(() => {
-    localStorage.setItem("quotes", JSON.stringify(quotes));
-  }, [quotes]);
-
-  useEffect(() => {
-    localStorage.setItem("invoices", JSON.stringify(invoices));
-  }, [invoices]);
 
   // Function to add a new client
   const addClient = (client: Client) => {
@@ -199,6 +154,27 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     );
   };
 
+  // Function to add a new invoice
+  const addInvoice = (invoice: Omit<Invoice, 'id'>) => {
+    const totalAmount = invoice.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
+
+    const newInvoice = {
+      ...invoice,
+      id: Date.now(),
+      lineItems: invoice.lineItems.map((item, index) => ({
+        id: index + 1,
+        ...item,
+      })),
+      date: new Date().toISOString().split('T')[0],
+      totalAmount: totalAmount.toFixed(2),
+    };
+
+    setInvoices((prevInvoices) => [...prevInvoices, newInvoice]);
+  };
+
   // Function to delete an invoice
   const deleteInvoice = (id: number) => {
     setInvoices((prevInvoices) =>
@@ -211,14 +187,8 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       value={{
         businessInfo,
         clients,
-        quotes,
-        invoices,
         addClient,
-        addQuote,
-        updateQuote,
-        deleteQuote,
-        updateInvoice,
-        deleteInvoice,
+        addInvoice,
       }}
     >
       {children}

@@ -1,71 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { useQuoteContext } from "@/context/QuoteContext";
+import { useInvoiceContext } from "@/context/InvoiceContext";
+import { useDashboardContext } from "@/context/DashboardContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import AddClientModal from "@/components/dashboard/AddClientModal";
 
-const AddQuotePage: React.FC = () => {
+const AddInvoicePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, quotes, addQuote, updateQuote } = useQuoteContext();
-  const [formData, setFormData] = useState(() => {
+  const { invoices, addInvoice, updateInvoice } = useInvoiceContext();
+  const { clients } = useDashboardContext();
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    amount: "",
+    clientId: "",
+  });
+  const [lineItems, setLineItems] = useState([]);
+
+  useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const quoteId = params.get("id");
-    if (quoteId) {
-      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
-      if (existingQuote) {
-        return {
-          title: existingQuote.title,
-          description: existingQuote.description,
-          clientId: String(existingQuote.clientId),
-          lineItems: existingQuote.lineItems.map((item) => ({
-            description: item.description,
-            quantity: item.quantity,
-            price: item.unitPrice,
-          })),
-        };
+    const invoiceId = params.get("id");
+    if (invoiceId) {
+      const existingInvoice = invoices.find((invoice) => invoice.id === Number(invoiceId));
+      if (existingInvoice) {
+        setFormData({
+          title: existingInvoice.title,
+          description: existingInvoice.description,
+          amount: existingInvoice.amount,
+          clientId: String(existingInvoice.clientId),
+        });
+        setLineItems(
+          Array.isArray(existingInvoice.lineItems)
+            ? existingInvoice.lineItems.map((item) => ({
+                description: item.description || "",
+                quantity: item.quantity || 1,
+                price: item.unitPrice || 0,
+              }))
+            : []
+        );
       }
     }
-    return {
-      title: "",
-      description: "",
-      clientId: "",
-      lineItems: [{ description: "", quantity: 1, price: 0 }],
-    };
-  });
-  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleClientSelect = (value: string) => {
-    if (value === "add-new") {
-      setIsClientModalOpen(true);
-    } else {
-      setFormData((prevData) => ({ ...prevData, clientId: value }));
-    }
-  };
-
-  const [lineItems, setLineItems] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    const quoteId = params.get("id");
-    if (quoteId) {
-      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
-      if (existingQuote) {
-        return existingQuote.lineItems.map((item) => ({
-          description: item.description,
-          quantity: item.quantity,
-          price: item.unitPrice,
-        }));
-      }
-    }
-    return [{ description: "", quantity: 1, price: 0 }];
-  });
+  }, [invoices]);
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
     setLineItems((prevItems) =>
@@ -87,26 +66,47 @@ const AddQuotePage: React.FC = () => {
     return lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
   };
 
-  const handleSaveQuote = () => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+
+  const handleClientSelect = (value: string) => {
+    if (value === "add-new") {
+      setIsClientModalOpen(true);
+    } else {
+      setFormData((prevData) => ({ ...prevData, clientId: value }));
+    }
+  };
+
+  const handleSaveInvoice = () => {
     if (formData.title && formData.description && formData.clientId) {
       const params = new URLSearchParams(window.location.search);
-      const quoteId = params.get("id");
-      const quotePayload = {
+      const invoiceId = params.get("id");
+      const invoicePayload = {
         title: formData.title,
         description: formData.description,
-        clientId: Number(formData.clientId),
         lineItems: lineItems.map((item) => ({
           description: item.description,
           quantity: item.quantity,
           unitPrice: item.price,
         })),
         totalAmount: calculateTotalAmount(),
+        clientId: Number(formData.clientId),
+        date: new Date().toISOString().split("T")[0],
       };
 
-      if (quoteId) {
-        updateQuote(Number(quoteId), quotePayload);
+      if (invoiceId) {
+        updateInvoice(Number(invoiceId), invoicePayload);
       } else {
-        addQuote(quotePayload);
+        addInvoice(invoicePayload);
+        toast({
+          title: "Success",
+          description: "Invoice added successfully.",
+          variant: "success",
+        });
       }
       navigate("/dashboard");
     } else {
@@ -117,11 +117,11 @@ const AddQuotePage: React.FC = () => {
       });
     }
   };
-  
+
   return (
     <div className="p-6 space-y-6 pb-40">
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Quote" : "Add New Quote"}</h1>
+        <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Invoice" : "Add New Invoice"}</h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
           Back
         </Button>
@@ -136,7 +136,7 @@ const AddQuotePage: React.FC = () => {
               name="title"
               value={formData.title}
               onChange={handleInputChange}
-              placeholder="Enter quote title"
+              placeholder="Enter invoice title"
               required
             />
           </FormControl>
@@ -151,7 +151,7 @@ const AddQuotePage: React.FC = () => {
               name="description"
               value={formData.description}
               onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
-              placeholder="Enter quote description"
+              placeholder="Enter invoice description"
               required
               className="textarea h-32 border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-primary"
             />
@@ -169,7 +169,7 @@ const AddQuotePage: React.FC = () => {
                   : "Select a client"}
               </SelectTrigger>
               <SelectContent>
-                {clients.map((client) => (
+                {clients && clients.map((client) => (
                   <SelectItem key={client.id} value={String(client.id)}>
                     {client.name}
                   </SelectItem>
@@ -184,7 +184,7 @@ const AddQuotePage: React.FC = () => {
         <FormItem>
           <FormLabel>Line Items</FormLabel>
           <div className="space-y-4">
-            {lineItems.map((item, index) => (
+            {Array.isArray(lineItems) && lineItems.map((item, index) => (
               <div key={index} className="flex space-x-4 items-center">
                 <Input
                   name={`description-${index}`}
@@ -233,11 +233,14 @@ const AddQuotePage: React.FC = () => {
             </Button>
             <Button
               type="button"
-              onClick={handleSaveQuote}
+              onClick={handleSaveInvoice}
             >
-              {new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}
+              {new URLSearchParams(window.location.search).get("id") ? "Update Invoice" : "Add Invoice"}
             </Button>
           </div>
+        </div>
+        <div className="text-right text-sm text-muted-foreground">
+          Note: Ensure all line items are accurate before saving.
         </div>
       </Form>
 
@@ -246,4 +249,4 @@ const AddQuotePage: React.FC = () => {
   );
 };
 
-export default AddQuotePage;
+export default AddInvoicePage;
