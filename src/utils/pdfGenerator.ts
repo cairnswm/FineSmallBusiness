@@ -1,17 +1,25 @@
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf";
 
 /**
  * Generates a PDF document for a given quote.
  * @param {Object} quote - The quote object containing details to be included in the PDF.
  * @param {string} quote.title - The title of the quote.
  * @param {string} quote.description - The description of the quote.
- * @param {Array} quote.lineItems - The line items of the quote.
+ * @param {Array<{ description: string, quantity: number, unitPrice: number }>} quote.lineItems - The line items of the quote.
  * @param {string} quote.date - The date of the quote.
  * @param {string} quote.clientName - The name of the client.
  * @param {string} quote.clientEmail - The email of the client.
  * @param {string} quote.clientAddress - The address of the client.
  */
-export const generateQuotePdf = (quote) => {
+export const generateQuotePdf = (quote: {
+  title: string;
+  description: string;
+  lineItems: { description: string; quantity: number; unitPrice: number }[];
+  date: string;
+  clientName: string;
+  clientEmail: string;
+  clientAddress: string;
+}) => {
   const doc = new jsPDF();
 
   // Add title
