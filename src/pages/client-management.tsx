@@ -10,7 +10,6 @@ const ClientManagement = () => {
   const { clients } = useDashboardContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editClientId, setEditClientId] = useState<number | null>(null);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,9 +20,6 @@ const ClientManagement = () => {
     setStatusFilter(status);
   };
 
-  const handleAddClient = () => {
-    setIsAddModalOpen(true);
-  };
 
   const handleEditClient = (id: number) => {
     setEditClientId(id);
@@ -105,14 +101,6 @@ const ClientManagement = () => {
           />
         ))}
       </div>
-
-      <AddClientModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
-      {editClientId !== null && (
-        <EditClientModal
-          clientId={editClientId}
-          onClose={handleCloseEditModal}
-        />
-      )}
     </div>
   );
 };
