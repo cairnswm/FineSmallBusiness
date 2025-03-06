@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDashboardContext } from "@/context/DashboardContext";
 import ClientCard from "@/components/dashboard/ClientCard";
-import AddClientModal from "@/components/dashboard/AddClientModal";
-import EditClientModal from "@/components/dashboard/EditClientModal";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -50,9 +49,9 @@ const ClientManagement = () => {
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Client Management</h1>
-                <Button variant="outline" onClick={() => navigate("/dashboard")}>
-                  Back
-                </Button>
+        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+          Back
+        </Button>
       </header>
 
 
@@ -118,4 +117,4 @@ const ClientManagement = () => {
   );
 };
 
-export default ClientManagement; 
+export default ClientManagement;
