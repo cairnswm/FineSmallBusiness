@@ -42,9 +42,6 @@ const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems
         >
           <Link to={`/add-quote?id=${id}`}>Edit</Link>
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => deleteQuote(id)} aria-label={`Delete ${title}`}>
-          Delete
-        </Button>
         <Button
           variant="outline"
           size="sm"

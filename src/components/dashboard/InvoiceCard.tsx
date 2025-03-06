@@ -41,9 +41,6 @@ const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
         >
           <Link to={`/add-invoice?id=${invoice.id}`}>Edit</Link>
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => deleteInvoice(invoice.id)} aria-label={`Delete ${invoice.title}`}>
-          Delete
-        </Button>
         <Button
           variant="outline"
           size="sm"
