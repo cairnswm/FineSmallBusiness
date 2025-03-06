@@ -34,7 +34,38 @@ export const useQuoteContext = (): QuoteContextType => {
 };
 
 const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [quotes, setQuotes] = useState<Quote[]>([
+    {
+      id: 1,
+      title: 'Website Development',
+      description: 'Development of a company website',
+      lineItems: [
+        { id: 1, description: 'Design', quantity: 1, unitPrice: 500 },
+        { id: 2, description: 'Development', quantity: 1, unitPrice: 1500 },
+      ],
+      date: '2023-01-01',
+    },
+    {
+      id: 2,
+      title: 'Mobile App Development',
+      description: 'Development of a mobile application',
+      lineItems: [
+        { id: 1, description: 'Design', quantity: 1, unitPrice: 700 },
+        { id: 2, description: 'Development', quantity: 1, unitPrice: 2000 },
+      ],
+      date: '2023-02-01',
+    },
+    {
+      id: 3,
+      title: 'SEO Optimization',
+      description: 'SEO services for the company website',
+      lineItems: [
+        { id: 1, description: 'Initial Audit', quantity: 1, unitPrice: 300 },
+        { id: 2, description: 'Monthly Optimization', quantity: 6, unitPrice: 200 },
+      ],
+      date: '2023-03-01',
+    }
+  ]);
 
   useEffect(() => {
     const storedQuotes = localStorage.getItem("quotes");

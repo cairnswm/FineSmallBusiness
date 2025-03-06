@@ -2,20 +2,35 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { useQuoteContext } from "@/context/QuoteContext";
+import { useDashboardContext } from "@/context/DashboardContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import AddClientModal from "@/components/dashboard/AddClientModal";
 
 const AddQuotePage: React.FC = () => {
   const navigate = useNavigate();
-  const { clients, quotes, addQuote, updateQuote } = useQuoteContext();
+  const { quotes, addQuote, updateQuote } = useQuoteContext();
+  const { clients } = useDashboardContext();
   const [formData, setFormData] = useState(() => {
     const params = new URLSearchParams(window.location.search);
     const quoteId = params.get("id");
     if (quoteId) {
-      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
+      const existingQuote = quotes.find(
+        (quote) => quote.id === Number(quoteId)
+      );
       if (existingQuote) {
         return {
           title: existingQuote.title,
@@ -38,7 +53,9 @@ const AddQuotePage: React.FC = () => {
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -55,7 +72,9 @@ const AddQuotePage: React.FC = () => {
     const params = new URLSearchParams(window.location.search);
     const quoteId = params.get("id");
     if (quoteId) {
-      const existingQuote = quotes.find((quote) => quote.id === Number(quoteId));
+      const existingQuote = quotes.find(
+        (quote) => quote.id === Number(quoteId)
+      );
       if (existingQuote) {
         return existingQuote.lineItems.map((item) => ({
           description: item.description,
@@ -67,7 +86,11 @@ const AddQuotePage: React.FC = () => {
     return [{ description: "", quantity: 1, price: 0 }];
   });
 
-  const handleLineItemChange = (index: number, field: string, value: string | number) => {
+  const handleLineItemChange = (
+    index: number,
+    field: string,
+    value: string | number
+  ) => {
     setLineItems((prevItems) =>
       prevItems.map((item, i) =>
         i === index ? { ...item, [field]: value } : item
@@ -76,7 +99,10 @@ const AddQuotePage: React.FC = () => {
   };
 
   const handleAddLineItem = () => {
-    setLineItems((prevItems) => [...prevItems, { description: "", quantity: 1, price: 0 }]);
+    setLineItems((prevItems) => [
+      ...prevItems,
+      { description: "", quantity: 1, price: 0 },
+    ]);
   };
 
   const handleRemoveLineItem = (index: number) => {
@@ -84,7 +110,10 @@ const AddQuotePage: React.FC = () => {
   };
 
   const calculateTotalAmount = () => {
-    return lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
+    return lineItems.reduce(
+      (total, item) => total + item.quantity * item.price,
+      0
+    );
   };
 
   const handleSaveQuote = () => {
@@ -117,11 +146,15 @@ const AddQuotePage: React.FC = () => {
       });
     }
   };
-  
+
   return (
     <div className="p-6 space-y-6 pb-40">
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{new URLSearchParams(window.location.search).get("id") ? "Edit Quote" : "Add New Quote"}</h1>
+        <h1 className="text-2xl font-bold">
+          {new URLSearchParams(window.location.search).get("id")
+            ? "Edit Quote"
+            : "Add New Quote"}
+        </h1>
         <Button variant="outline" onClick={() => navigate("/dashboard")}>
           Back
         </Button>
@@ -150,7 +183,9 @@ const AddQuotePage: React.FC = () => {
               id="description"
               name="description"
               value={formData.description}
-              onChange={(e) => handleInputChange(e as React.ChangeEvent<HTMLInputElement>)}
+              onChange={(e) =>
+                handleInputChange(e as React.ChangeEvent<HTMLInputElement>)
+              }
               placeholder="Enter quote description"
               required
               className="textarea h-32 border border-gray-300 rounded-md p-3 resize-none focus:outline-none focus:ring-2 focus:ring-primary"
@@ -162,10 +197,15 @@ const AddQuotePage: React.FC = () => {
         <FormItem>
           <FormLabel htmlFor="client">Client</FormLabel>
           <FormControl>
-            <Select value={formData.clientId} onValueChange={handleClientSelect}>
+            <Select
+              value={formData.clientId}
+              onValueChange={handleClientSelect}
+            >
               <SelectTrigger>
                 {formData.clientId
-                  ? clients.find((client) => client.id === Number(formData.clientId))?.name || "Select a client"
+                  ? clients.find(
+                      (client) => client.id === Number(formData.clientId)
+                    )?.name || "Select a client"
                   : "Select a client"}
               </SelectTrigger>
               <SelectContent>
@@ -189,7 +229,9 @@ const AddQuotePage: React.FC = () => {
                 <Input
                   name={`description-${index}`}
                   value={item.description}
-                  onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
+                  onChange={(e) =>
+                    handleLineItemChange(index, "description", e.target.value)
+                  }
                   placeholder="Description"
                   required
                 />
@@ -208,11 +250,16 @@ const AddQuotePage: React.FC = () => {
                   name={`price-${index}`}
                   type="number"
                   value={item.price}
-                  onChange={(e) => handleLineItemChange(index, "price", Number(e.target.value))}
+                  onChange={(e) =>
+                    handleLineItemChange(index, "price", Number(e.target.value))
+                  }
                   placeholder="Price"
                   required
                 />
-                <Button variant="destructive" onClick={() => handleRemoveLineItem(index)}>
+                <Button
+                  variant="destructive"
+                  onClick={() => handleRemoveLineItem(index)}
+                >
                   Remove
                 </Button>
               </div>
@@ -228,20 +275,26 @@ const AddQuotePage: React.FC = () => {
             Total: ${calculateTotalAmount().toFixed(2)}
           </div>
           <div className="flex justify-end space-x-4">
-            <Button type="button" variant="outline" onClick={() => navigate("/dashboard")}>
-              Cancel
-            </Button>
             <Button
               type="button"
-              onClick={handleSaveQuote}
+              variant="outline"
+              onClick={() => navigate("/dashboard")}
             >
-              {new URLSearchParams(window.location.search).get("id") ? "Update Quote" : "Add Quote"}
+              Cancel
+            </Button>
+            <Button type="button" onClick={handleSaveQuote}>
+              {new URLSearchParams(window.location.search).get("id")
+                ? "Update Quote"
+                : "Add Quote"}
             </Button>
           </div>
         </div>
       </Form>
 
-      <AddClientModal isOpen={isClientModalOpen} onClose={() => setIsClientModalOpen(false)} />
+      <AddClientModal
+        isOpen={isClientModalOpen}
+        onClose={() => setIsClientModalOpen(false)}
+      />
     </div>
   );
 };

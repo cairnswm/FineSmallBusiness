@@ -17,6 +17,7 @@ interface DashboardContextType {
   clients: Client[];
   addClient: (client: Client) => void;
   addInvoice: (invoice: Omit<Invoice, 'id'>) => void;
+  updateBusinessInfo: (info: BusinessInfo) => void;
 }
 interface BusinessInfo {
   name: string;
@@ -71,8 +72,6 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
     ];
   });
-
-  // Removed API fetch calls and lazy loading to prevent data reset on mount
 
   // Persist state to localStorage whenever it changes
   useEffect(() => {
@@ -182,6 +181,16 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     );
   };
 
+  // Function to update business information
+  const updateBusinessInfo = (info: BusinessInfo) => {
+    setBusinessInfo(info);
+    toast({
+      title: "Business Information Updated",
+      description: "Your business information has been successfully updated.",
+      variant: "success",
+    });
+  };
+
   return (
     <DashboardContext.Provider
       value={{
@@ -189,6 +198,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         clients,
         addClient,
         addInvoice,
+        updateBusinessInfo,
       }}
     >
       {children}

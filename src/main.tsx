@@ -15,7 +15,7 @@ import { DashboardProvider } from "./context/DashboardContext";
 import { QuoteProvider } from "./context/QuoteContext";
 import { InvoiceProvider } from "./context/InvoiceContext";
 import "./index.css";
-import Index from "./pages";
+import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
 const queryClient = new QueryClient();
@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
             <QuoteProvider>
               <InvoiceProvider>
                 <Routes>
-                  <Route path="/" element={<Index />} />
+                  <Route path="/" element={<LandingPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/add-quote" element={<AddQuotePage />} />
                   <Route path="/edit-quote/:id" element={<AddQuotePage />} />

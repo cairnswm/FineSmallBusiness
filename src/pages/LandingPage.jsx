@@ -4,7 +4,7 @@ import FeatureCard from "@/components/landing/FeatureCard";
 import PricingCard from "@/components/landing/PricingCard";
 import WaitingListModal from "@/components/landing/WaitingListModal";
 
-const Index = () => {
+const LandingPage = () => {
   return (
     <main className="w-full bg-background">
       <div className="container mx-auto px-4 py-8 space-y-16">
@@ -65,4 +65,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default LandingPage;
