@@ -32,6 +32,7 @@ interface Client {
   email: string;
   phone: string;
   address: string;
+  status: "active" | "inactive";
 }
 interface Quote {
   id: number;
@@ -67,10 +68,26 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   });
   const [clients, setClients] = useState<Client[]>(() => {
     const storedClients = localStorage.getItem("clients");
-    return storedClients ? JSON.parse(storedClients) : [
-      { id: 1, name: "John Doe", email: "john@example.com", phone: "555-1234", address: "123 Elm St" },
-      { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "555-5678", address: "456 Oak St" },
-    ];
+    return storedClients
+      ? JSON.parse(storedClients)
+      : [
+          {
+            id: 1,
+            name: "John Doe",
+            email: "john@example.com",
+            phone: "555-1234",
+            address: "123 Elm St",
+            status: "active",
+          },
+          {
+            id: 2,
+            name: "Jane Smith",
+            email: "jane@example.com",
+            phone: "555-5678",
+            address: "456 Oak St",
+            status: "inactive",
+          },
+        ];
   });
 
   // Persist state to localStorage whenever it changes
@@ -191,6 +208,22 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     });
   };
 
+  const updateClientStatus = (id: number, status: "active" | "inactive") => {
+    setClients((prevClients) =>
+      prevClients.map((client) =>
+        client.id === id ? { ...client, status } : client
+      )
+    );
+  };
+
+  const editClient = (id: number, updatedClient: Partial<Client>) => {
+    setClients((prevClients) =>
+      prevClients.map((client) =>
+        client.id === id ? { ...client, ...updatedClient } : client
+      )
+    );
+  };
+
   return (
     <DashboardContext.Provider
       value={{
@@ -199,6 +232,8 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         addClient,
         addInvoice,
         updateBusinessInfo,
+        updateClientStatus,
+        editClient,
       }}
     >
       {children}
