@@ -7,6 +7,15 @@ interface QuoteContextType {
   updateQuote: (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => void;
   deleteQuote: (id: number) => void;
 }
+import { generateQuotePdf } from "../utils/pdfGenerator";
+
+const exportQuoteToPdf = (quote: Quote) => {
+  if (quote) {
+    generateQuotePdf(quote);
+  } else {
+    console.error("Invalid quote object provided.");
+  }
+};
 
 interface Quote {
   id: number;
@@ -100,7 +109,7 @@ const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   return (
-    <QuoteContext.Provider value={{ quotes, addQuote, updateQuote, deleteQuote }}>
+    <QuoteContext.Provider value={{ quotes, addQuote, updateQuote, deleteQuote, exportQuoteToPdf }}>
       {children}
     </QuoteContext.Provider>
   );
