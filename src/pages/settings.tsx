@@ -6,8 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDashboardContext } from "@/context/DashboardContext";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const SettingsPage = () => {
+  const navigate = useNavigate();
   const { businessInfo, updateBusinessInfo } = useDashboardContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -29,26 +31,35 @@ const SettingsPage = () => {
     website: string;
   }
 
-  const onSubmit = (data: BusinessFormData) => {
+  const onSubmit = async (data: BusinessFormData) => {
     setIsSubmitting(true);
-    
-    updateBusinessInfo({
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      address: data.address,
-      website: data.website,
-    });
-    
-    setIsSubmitting(false);
+
+    try {
+      await updateBusinessInfo({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        website: data.website,
+      });
+    } catch (error) {
+      console.error("Failed to update business information:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="flex-1 flex flex-col">
-      <DashboardHeader />
 
       <div className="p-6 space-y-6">
-        <h1 className="text-2xl font-bold">Business Settings</h1>
+            <header className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Settings</h1>
+        <Button variant="outline" onClick={() => navigate("/dashboard")}>
+          Back
+        </Button>
+      </header>
+      
 
         <Card className="w-full max-w-2xl mx-auto">
           <CardHeader>

@@ -17,7 +17,7 @@ interface DashboardContextType {
   clients: Client[];
   addClient: (client: Client) => void;
   addInvoice: (invoice: Omit<Invoice, 'id'>) => void;
-  updateBusinessInfo: (info: BusinessInfo) => void;
+  updateBusinessInfo: (info: BusinessInfo) => Promise<void>;
 }
 interface BusinessInfo {
   name: string;
@@ -182,7 +182,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to update business information
-  const updateBusinessInfo = (info: BusinessInfo) => {
+  const updateBusinessInfo = (info: BusinessInfo): void => {
     setBusinessInfo(info);
     toast({
       title: "Business Information Updated",
