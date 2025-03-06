@@ -46,7 +46,7 @@ const AddInvoicePage: React.FC = () => {
         }));
       }
     }
-    return [{ description: "", quantity: 1, price: 0 }];
+    return [];
   });
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
