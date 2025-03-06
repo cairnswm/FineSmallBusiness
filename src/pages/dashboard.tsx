@@ -5,7 +5,6 @@ import BusinessInfo from "@/components/dashboard/BusinessInfo";
 import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
-import InvoiceCard from "@/components/dashboard/InvoiceCard";
 import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
 import { useQuoteContext } from "@/context/QuoteContext";
 import { useInvoiceContext } from "@/context/InvoiceContext";

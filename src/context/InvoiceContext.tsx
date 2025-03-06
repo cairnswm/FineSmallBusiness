@@ -34,40 +34,51 @@ export const useInvoiceContext = (): InvoiceContextType => {
 };
 
 const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [invoices, setInvoices] = useState<Invoice[]>(() => {
+    const storedInvoices = localStorage.getItem("invoices");
+    return storedInvoices ? JSON.parse(storedInvoices) : [
+      {
+        id: 1,
+        title: "Mock Invoice 1",
+        description: "Description for Mock Invoice 1",
+        lineItems: [
+          { id: 1, description: "Item 1", quantity: 2, unitPrice: 50 },
+          { id: 2, description: "Item 2", quantity: 1, unitPrice: 100 },
+        ],
+        date: "2023-01-01",
+      },
+      {
+        id: 2,
+        title: "Mock Invoice 2",
+        description: "Description for Mock Invoice 2",
+        lineItems: [
+          { id: 1, description: "Item A", quantity: 3, unitPrice: 30 },
+          { id: 2, description: "Item B", quantity: 2, unitPrice: 40 },
+        ],
+        date: "2023-02-01",
+      },
+    ];
+  });
 
   useEffect(() => {
-    fetch('/api/invoices')
-      .then(response => response.json())
-      .then(data => setInvoices(data))
-      .catch(error => console.error('Error fetching invoices:', error));
-  }, []);
+    localStorage.setItem("invoices", JSON.stringify(invoices));
+  }, [invoices]);
 
   const addInvoice = (invoice: Omit<Invoice, 'id' | 'date'>) => {
-    fetch('/api/invoices', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(invoice),
-    })
-      .then(response => response.json())
-      .then(newInvoice => setInvoices(prev => [...prev, newInvoice]))
-      .catch(error => console.error('Error adding invoice:', error));
+    const newInvoice = {
+      ...invoice,
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+    };
+    setInvoices(prev => [...prev, newInvoice]);
   };
 
   const updateInvoice = (id: number, updatedInvoice: Omit<Invoice, 'id' | 'date'>) => {
-    fetch(`/api/invoices/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedInvoice),
-    })
-      .then(() => setInvoices(prev => prev.map(inv => (inv.id === id ? { ...inv, ...updatedInvoice } : inv))))
-      .catch(error => console.error('Error updating invoice:', error));
+    setInvoices(prev => prev.map(inv => (inv.id === id ? { ...inv, ...updatedInvoice } : inv)));
   };
 
   const deleteInvoice = (id: number) => {
-    fetch(`/api/invoices/${id}`, { method: 'DELETE' })
-      .then(() => setInvoices(prev => prev.filter(inv => inv.id !== id)))
-      .catch(error => console.error('Error deleting invoice:', error));
+    setInvoices(prev => prev.filter(inv => inv.id !== id));
   };
 
   return (
