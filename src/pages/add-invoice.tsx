@@ -43,7 +43,6 @@ const AddInvoicePage: React.FC = () => {
       }
     }
   }, [invoices]);
-  const [lineItems, setLineItems] = useState([{ description: "", quantity: 1, price: 0 }]);
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
     setLineItems((prevItems) =>
