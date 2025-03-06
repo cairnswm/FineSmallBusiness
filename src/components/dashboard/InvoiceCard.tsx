@@ -21,7 +21,7 @@ interface InvoiceCardProps {
 }
 
 const InvoiceCard: React.FC<InvoiceCardProps> = ({ id, title, description, lineItems, date, onEdit, onDelete }) => {
-  const totalAmount = lineItems.reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
+  const totalAmount = (lineItems || []).reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
 
   return (
     <Card className="rounded-lg border border-border bg-card p-4 shadow-sm hover:shadow-md transition-shadow">

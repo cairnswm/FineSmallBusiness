@@ -23,6 +23,7 @@ interface DashboardContextType {
   deleteQuote: (id: number) => void;
   updateInvoice: (id: number, updatedInvoice: Invoice) => void;
   deleteInvoice: (id: number) => void;
+  addInvoice: (invoice: Omit<Invoice, 'id'>) => void;
 }
 interface BusinessInfo {
   name: string;
@@ -58,6 +59,7 @@ interface Invoice {
   description: string;
   amount: string;
   date: string;
+  lineItems?: LineItem[];
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(() => {
@@ -199,6 +201,16 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     );
   };
 
+  // Function to add a new invoice
+  const addInvoice = (invoice: Omit<Invoice, 'id'>) => {
+    const newInvoice = {
+      ...invoice,
+      id: Date.now(),
+      lineItems: invoice.lineItems || [],
+    };
+    setInvoices((prevInvoices) => [...prevInvoices, newInvoice]);
+  };
+
   // Function to delete an invoice
   const deleteInvoice = (id: number) => {
     setInvoices((prevInvoices) =>
@@ -219,6 +231,7 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         deleteQuote,
         updateInvoice,
         deleteInvoice,
+        addInvoice,
       }}
     >
       {children}
