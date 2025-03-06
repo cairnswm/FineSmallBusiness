@@ -25,7 +25,7 @@ const DashboardHeader: React.FC = () => {
       <div className="menu p-2">
         <div className="container mx-auto flex justify-center items-center space-x-8">
           <Link to="/settings" className="font-medium text-white hover:text-white/80 transition-colors">Settings</Link>
-          <Link to="/clientinfo" className="font-medium text-white hover:text-white/80 transition-colors">Clients</Link>
+          <Link to="/clients" className="font-medium text-white hover:text-white/80 transition-colors">Clients</Link>
           <Link to="/quotes" className="font-medium text-white hover:text-white/80 transition-colors">Quotes</Link>
           <Link to="/invoices" className="font-medium text-white hover:text-white/80 transition-colors">Invoices</Link>
         </div>

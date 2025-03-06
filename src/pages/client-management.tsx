@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const ClientManagement = () => {
+  console.log("CLIENTS")
   const { clients } = useDashboardContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -42,13 +43,20 @@ const ClientManagement = () => {
     return matchesSearch && matchesStatus;
   });
 
+  console.log("Clients", clients);
+  console.log("Filtered Clients", filteredClients);
+
   return (
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Client Management</h1>
-        <Button onClick={handleAddClient}>Add Client</Button>
+                <Button variant="outline" onClick={() => navigate("/dashboard")}>
+                  Back
+                </Button>
       </header>
 
+
+      <Button onClick={handleAddClient}>Add Client</Button>
       <div className="flex space-x-4">
         <Input
           type="text"
