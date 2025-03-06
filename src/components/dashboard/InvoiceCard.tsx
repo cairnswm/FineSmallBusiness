@@ -9,7 +9,7 @@ interface InvoiceCardProps {
 }
 
 const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
-  const { invoices, deleteInvoice, exportInvoiceToPdf } = useInvoiceContext();
+  const { invoices, exportInvoiceToPdf } = useInvoiceContext();
   const invoice = invoices.find((inv) => inv.id === id);
 
   if (!invoice) {

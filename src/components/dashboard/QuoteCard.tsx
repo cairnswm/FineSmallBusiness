@@ -20,7 +20,7 @@ interface QuoteCardProps {
 }
 
 const QuoteCard: React.FC<QuoteCardProps> = ({ id, title, description, lineItems, date }) => {
-  const { deleteQuote, exportQuoteToPdf } = useQuoteContext();
+  const { exportQuoteToPdf } = useQuoteContext();
   const totalAmount = lineItems.reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
 
   return (
