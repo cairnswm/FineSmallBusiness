@@ -216,6 +216,11 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         client.id === id ? { ...client, status } : client
       )
     );
+    toast({
+      title: `Client ${status === "active" ? "Activated" : "Deactivated"}`,
+      description: `The client has been successfully ${status === "active" ? "activated" : "deactivated"}.`,
+      variant: "success",
+    });
   };
 
   const editClient = (id: number, updatedClient: Partial<Client>) => {

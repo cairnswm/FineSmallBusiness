@@ -41,18 +41,20 @@ const Dashboard = () => {
         <section>
           <h2 className="text-2xl font-bold mb-4">Clients</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {clients.map((client) => (
-              <ClientCard
-                key={client.id}
-                id={client.id}
-                name={client.name}
-                email={client.email}
-                phone={client.phone}
-                address={client.address}
-                onEdit={(id) => console.log(`Edit client ${id}`)}
-                onDelete={(id) => console.log(`Delete client ${id}`)}
-              />
-            ))}
+            {clients
+              .filter((client) => client.status === "active")
+              .map((client) => (
+                <ClientCard
+                  key={client.id}
+                  id={client.id}
+                  name={client.name}
+                  email={client.email}
+                  phone={client.phone}
+                  address={client.address}
+                  onEdit={(id) => console.log(`Edit client ${id}`)}
+                  onDelete={(id) => console.log(`Delete client ${id}`)}
+                />
+              ))}
           </div>
         </section>
 
