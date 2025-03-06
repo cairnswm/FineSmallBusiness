@@ -34,23 +34,38 @@ export const useQuoteContext = (): QuoteContextType => {
 };
 
 const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { quotes: dashboardQuotes, addQuote: dashboardAddQuote, updateQuote: dashboardUpdateQuote, deleteQuote: dashboardDeleteQuote } = useDashboardContext();
-  const [quotes, setQuotes] = useState<Quote[]>(dashboardQuotes || []);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
 
   useEffect(() => {
-    setQuotes(dashboardQuotes);
-  }, [dashboardQuotes]);
+    const storedQuotes = localStorage.getItem("quotes");
+    if (storedQuotes) {
+      setQuotes(JSON.parse(storedQuotes));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+  }, [quotes]);
 
   const addQuote = (quote: Omit<Quote, 'id' | 'date'>) => {
-    dashboardAddQuote(quote);
+    const newQuote = {
+      ...quote,
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+    };
+    setQuotes((prevQuotes) => [...prevQuotes, newQuote]);
   };
 
   const updateQuote = (id: number, updatedQuote: Omit<Quote, 'id' | 'date'>) => {
-    dashboardUpdateQuote(id, updatedQuote);
+    setQuotes((prevQuotes) =>
+      prevQuotes.map((quote) =>
+        quote.id === id ? { ...quote, ...updatedQuote } : quote
+      )
+    );
   };
 
   const deleteQuote = (id: number) => {
-    dashboardDeleteQuote(id);
+    setQuotes((prevQuotes) => prevQuotes.filter((quote) => quote.id !== id));
   };
 
   return (

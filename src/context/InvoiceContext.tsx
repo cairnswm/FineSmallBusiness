@@ -34,37 +34,40 @@ export const useInvoiceContext = (): InvoiceContextType => {
 };
 
 const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const {
-    invoices: dashboardInvoices,
-    addInvoice: dashboardAddInvoice,
-    updateInvoice: dashboardUpdateInvoice,
-    deleteInvoice: dashboardDeleteInvoice,
-  } = useDashboardContext();
-
-  const [invoices, setInvoices] = useState<Invoice[]>(() => {
-    if (dashboardInvoices && dashboardInvoices.length > 0) {
-      return dashboardInvoices.map(invoice => ({
-        ...invoice,
-        lineItems: invoice.lineItems || [],
-      }));
-    }
-    return [];
-  });
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
 
   useEffect(() => {
-    setInvoices(dashboardInvoices);
-  }, [dashboardInvoices]);
+    fetch('/api/invoices')
+      .then(response => response.json())
+      .then(data => setInvoices(data))
+      .catch(error => console.error('Error fetching invoices:', error));
+  }, []);
 
   const addInvoice = (invoice: Omit<Invoice, 'id' | 'date'>) => {
-    dashboardAddInvoice(invoice);
+    fetch('/api/invoices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(invoice),
+    })
+      .then(response => response.json())
+      .then(newInvoice => setInvoices(prev => [...prev, newInvoice]))
+      .catch(error => console.error('Error adding invoice:', error));
   };
 
   const updateInvoice = (id: number, updatedInvoice: Omit<Invoice, 'id' | 'date'>) => {
-    dashboardUpdateInvoice(id, updatedInvoice);
+    fetch(`/api/invoices/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedInvoice),
+    })
+      .then(() => setInvoices(prev => prev.map(inv => (inv.id === id ? { ...inv, ...updatedInvoice } : inv))))
+      .catch(error => console.error('Error updating invoice:', error));
   };
 
   const deleteInvoice = (id: number) => {
-    dashboardDeleteInvoice(id);
+    fetch(`/api/invoices/${id}`, { method: 'DELETE' })
+      .then(() => setInvoices(prev => prev.filter(inv => inv.id !== id)))
+      .catch(error => console.error('Error deleting invoice:', error));
   };
 
   return (
