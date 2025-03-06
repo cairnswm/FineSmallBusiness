@@ -34,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/add-quote" element={<AddQuotePage />} />
                   <Route path="/edit-quote/:id" element={<AddQuotePage />} />
                   <Route path="/add-invoice" element={<AddInvoicePage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
                 </Routes>
               </InvoiceProvider>
             </QuoteProvider>
