@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const ClientManagement = () => {
-  console.log("CLIENTS")
+  const navigate = useNavigate();
   const { clients } = useDashboardContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
