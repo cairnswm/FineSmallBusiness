@@ -6,11 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const ClientManagement = () => {
-  console.log("CLIENTS")
+  const navigate = useNavigate();
   const { clients } = useDashboardContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [editClientId, setEditClientId] = useState<number | null>(null);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -18,15 +17,6 @@ const ClientManagement = () => {
 
   const handleStatusFilterChange = (status: string) => {
     setStatusFilter(status);
-  };
-
-
-  const handleEditClient = (id: number) => {
-    setEditClientId(id);
-  };
-
-  const handleCloseEditModal = () => {
-    setEditClientId(null);
   };
 
   const filteredClients = clients.filter((client) => {
@@ -38,9 +28,6 @@ const ClientManagement = () => {
     return matchesSearch && matchesStatus;
   });
 
-  console.log("Clients", clients);
-  console.log("Filtered Clients", filteredClients);
-
   return (
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
@@ -50,8 +37,7 @@ const ClientManagement = () => {
         </Button>
       </header>
 
-
-      <Button onClick={handleAddClient}>Add Client</Button>
+      <Button onClick={() => navigate("/add-edit-client")}>Add Client</Button>
       <div className="flex space-x-4">
         <Input
           type="text"
@@ -90,9 +76,8 @@ const ClientManagement = () => {
             email={client.email}
             phone={client.phone}
             address={client.address}
-            onEdit={handleEditClient}
-            onDelete={(id) => console.log(`Delete client ${id}`)}
             status={client.status}
+            onEdit={(id) => navigate(`/add-edit-client?id=${id}`)}
             onToggleStatus={(id) =>
               client.status === "active"
                 ? updateClientStatus(id, "inactive")
