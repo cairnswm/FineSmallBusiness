@@ -160,6 +160,28 @@ const AddInvoicePage: React.FC = () => {
         </FormItem>
 
         <FormItem>
+          <FormLabel htmlFor="client">Client</FormLabel>
+          <FormControl>
+            <Select value={formData.clientId} onValueChange={handleClientSelect}>
+              <SelectTrigger>
+                {formData.clientId
+                  ? clients.find((client) => client.id === Number(formData.clientId))?.name || "Select a client"
+                  : "Select a client"}
+              </SelectTrigger>
+              <SelectContent>
+                {clients && clients.map((client) => (
+                  <SelectItem key={client.id} value={String(client.id)}>
+                    {client.name}
+                  </SelectItem>
+                ))}
+                <SelectItem value="add-new">Add New Client</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+
+        <FormItem>
           <FormLabel>Line Items</FormLabel>
           <div className="space-y-4">
             {Array.isArray(lineItems) && lineItems.map((item, index) => (
@@ -199,28 +221,6 @@ const AddInvoicePage: React.FC = () => {
               Add Line Item
             </Button>
           </div>
-        </FormItem>
-
-        <FormItem>
-          <FormLabel htmlFor="client">Client</FormLabel>
-          <FormControl>
-            <Select value={formData.clientId} onValueChange={handleClientSelect}>
-              <SelectTrigger>
-                {formData.clientId
-                  ? clients.find((client) => client.id === Number(formData.clientId))?.name || "Select a client"
-                  : "Select a client"}
-              </SelectTrigger>
-              <SelectContent>
-                {clients && clients.map((client) => (
-                  <SelectItem key={client.id} value={String(client.id)}>
-                    {client.name}
-                  </SelectItem>
-                ))}
-                <SelectItem value="add-new">Add New Client</SelectItem>
-              </SelectContent>
-            </Select>
-          </FormControl>
-          <FormMessage />
         </FormItem>
 
         <div className="space-y-4">
