@@ -9,12 +9,11 @@ interface QuoteContextType {
 }
 import { generateQuotePdf } from "../utils/pdfGenerator";
 
-const exportQuoteToPdf = (quoteId: number) => {
-  const quote = quotes.find((q) => q.id === quoteId);
+const exportQuoteToPdf = (quote: Quote) => {
   if (quote) {
     generateQuotePdf(quote);
   } else {
-    console.error(`Quote with ID ${quoteId} not found.`);
+    console.error("Invalid quote object provided.");
   }
 };
 
