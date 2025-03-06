@@ -182,34 +182,13 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   // Function to update business information
-  const updateBusinessInfo = async (info: BusinessInfo): Promise<void> => {
-    try {
-      // Simulate API call to update business information
-      const response = await fetch('/api/business-info', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(info),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update business information');
-      }
-
-      setBusinessInfo(info);
-      toast({
-        title: "Business Information Updated",
-        description: "Your business information has been successfully updated.",
-        variant: "success",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update business information. Please try again.",
-        variant: "destructive",
-      });
-    }
+  const updateBusinessInfo = (info: BusinessInfo): void => {
+    setBusinessInfo(info);
+    toast({
+      title: "Business Information Updated",
+      description: "Your business information has been successfully updated.",
+      variant: "success",
+    });
   };
 
   return (
