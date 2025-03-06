@@ -6,6 +6,7 @@ interface InvoiceContextType {
   addInvoice: (invoice: Omit<Invoice, 'id' | 'date'>) => void;
   updateInvoice: (id: number, updatedInvoice: Omit<Invoice, 'id' | 'date'>) => void;
   deleteInvoice: (id: number) => void;
+  exportInvoiceToPdf: (invoice: Invoice) => void;
 }
 
 interface Invoice {
@@ -93,8 +94,23 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     setInvoices(prev => prev.filter(inv => inv.id !== id));
   };
 
+  const exportInvoiceToPdf = (invoice: Invoice) => {
+    import('../utils/pdfGenerator').then(({ generateQuotePdf }) => {
+      const invoiceData = {
+        title: invoice.title,
+        description: invoice.description,
+        lineItems: invoice.lineItems,
+        date: invoice.date,
+        clientName: "Client Name Placeholder", // Replace with actual client data if available
+        clientEmail: "client@example.com", // Replace with actual client data if available
+        clientAddress: "Client Address Placeholder", // Replace with actual client data if available
+      };
+      generateQuotePdf(invoiceData);
+    });
+  };
+
   return (
-    <InvoiceContext.Provider value={{ invoices, addInvoice, updateInvoice, deleteInvoice }}>
+    <InvoiceContext.Provider value={{ invoices, addInvoice, updateInvoice, deleteInvoice, exportInvoiceToPdf }}>
       {children}
     </InvoiceContext.Provider>
   );

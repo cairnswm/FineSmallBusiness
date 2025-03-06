@@ -44,6 +44,14 @@ const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
         <Button variant="destructive" size="sm" onClick={() => deleteInvoice(invoice.id)} aria-label={`Delete ${invoice.title}`}>
           Delete
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => exportInvoiceToPdf(invoice)}
+          aria-label={`Export ${invoice.title} to PDF`}
+        >
+          Export PDF
+        </Button>
       </CardFooter>
     </Card>
   );
