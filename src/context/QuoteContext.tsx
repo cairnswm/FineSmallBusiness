@@ -35,7 +35,7 @@ export const useQuoteContext = (): QuoteContextType => {
 
 const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { quotes: dashboardQuotes, addQuote: dashboardAddQuote, updateQuote: dashboardUpdateQuote, deleteQuote: dashboardDeleteQuote } = useDashboardContext();
-  const [quotes, setQuotes] = useState<Quote[]>(dashboardQuotes);
+  const [quotes, setQuotes] = useState<Quote[]>(dashboardQuotes || []);
 
   useEffect(() => {
     setQuotes(dashboardQuotes);
