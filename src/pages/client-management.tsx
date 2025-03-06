@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDashboardContext } from "@/context/DashboardContext";
 import ClientCard from "@/components/dashboard/ClientCard";
 import AddClientModal from "@/components/dashboard/AddClientModal";
