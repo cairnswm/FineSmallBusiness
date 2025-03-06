@@ -33,6 +33,41 @@ const AddInvoicePage: React.FC = () => {
     };
   });
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [lineItems, setLineItems] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const invoiceId = params.get("id");
+    if (invoiceId) {
+      const existingInvoice = invoices.find((invoice) => invoice.id === Number(invoiceId));
+      if (existingInvoice && existingInvoice.lineItems) {
+        return existingInvoice.lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          price: item.unitPrice,
+        }));
+      }
+    }
+    return [{ description: "", quantity: 1, price: 0 }];
+  });
+
+  const handleLineItemChange = (index: number, field: string, value: string | number) => {
+    setLineItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  const handleAddLineItem = () => {
+    setLineItems((prevItems) => [...prevItems, { description: "", quantity: 1, price: 0 }]);
+  };
+
+  const handleRemoveLineItem = (index: number) => {
+    setLineItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+
+  const calculateTotalAmount = () => {
+    return lineItems.reduce((total, item) => total + item.quantity * item.price, 0);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -48,13 +83,18 @@ const AddInvoicePage: React.FC = () => {
   };
 
   const handleSaveInvoice = () => {
-    if (formData.title && formData.description && formData.amount && formData.clientId) {
+    if (formData.title && formData.description && formData.clientId) {
       const params = new URLSearchParams(window.location.search);
       const invoiceId = params.get("id");
       const invoicePayload = {
         title: formData.title,
         description: formData.description,
-        amount: formData.amount,
+        lineItems: lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          unitPrice: item.price,
+        })),
+        totalAmount: calculateTotalAmount(),
         clientId: Number(formData.clientId),
         date: new Date().toISOString().split("T")[0],
       };
@@ -121,19 +161,45 @@ const AddInvoicePage: React.FC = () => {
         </FormItem>
 
         <FormItem>
-          <FormLabel htmlFor="amount">Amount</FormLabel>
-          <FormControl>
-            <Input
-              id="amount"
-              name="amount"
-              type="number"
-              value={formData.amount}
-              onChange={handleInputChange}
-              placeholder="Enter invoice amount"
-              required
-            />
-          </FormControl>
-          <FormMessage />
+          <FormLabel>Line Items</FormLabel>
+          <div className="space-y-4">
+            {lineItems.map((item, index) => (
+              <div key={index} className="flex space-x-4 items-center">
+                <Input
+                  name={`description-${index}`}
+                  value={item.description}
+                  onChange={(e) => handleLineItemChange(index, "description", e.target.value)}
+                  placeholder="Description"
+                  required
+                />
+                <Input
+                  name={`quantity-${index}`}
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => {
+                    const updatedQuantity = Number(e.target.value);
+                    handleLineItemChange(index, "quantity", updatedQuantity);
+                  }}
+                  placeholder="Quantity"
+                  required
+                />
+                <Input
+                  name={`price-${index}`}
+                  type="number"
+                  value={item.price}
+                  onChange={(e) => handleLineItemChange(index, "price", Number(e.target.value))}
+                  placeholder="Price"
+                  required
+                />
+                <Button variant="destructive" onClick={() => handleRemoveLineItem(index)}>
+                  Remove
+                </Button>
+              </div>
+            ))}
+            <Button type="button" variant="outline" onClick={handleAddLineItem}>
+              Add Line Item
+            </Button>
+          </div>
         </FormItem>
 
         <FormItem>

@@ -57,9 +57,8 @@ interface Invoice {
   id: number;
   title: string;
   description: string;
-  amount: string;
+  lineItems: LineItem[];
   date: string;
-  lineItems?: LineItem[];
 }
 const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [businessInfo, setBusinessInfo] = useState<BusinessInfo | null>(() => {
@@ -107,8 +106,8 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   const [invoices, setInvoices] = useState<Invoice[]>(() => {
     const storedInvoices = localStorage.getItem("invoices");
     return storedInvoices ? JSON.parse(storedInvoices) : [
-      { id: 1, title: "Invoice 1", description: "Description for Invoice 1", amount: "150.00", date: "2023-03-01" },
-      { id: 2, title: "Invoice 2", description: "Description for Invoice 2", amount: "250.00", date: "2023-04-01" },
+      { id: 1, title: "Invoice 1", description: "Description for Invoice 1", lineItems: [], date: "2023-03-01" },
+      { id: 2, title: "Invoice 2", description: "Description for Invoice 2", lineItems: [], date: "2023-04-01" },
     ];
   });
 
@@ -203,11 +202,22 @@ const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ children }
 
   // Function to add a new invoice
   const addInvoice = (invoice: Omit<Invoice, 'id'>) => {
+    const totalAmount = invoice.lineItems.reduce(
+      (sum, item) => sum + item.quantity * item.unitPrice,
+      0
+    );
+
     const newInvoice = {
       ...invoice,
       id: Date.now(),
-      lineItems: invoice.lineItems || [],
+      lineItems: invoice.lineItems.map((item, index) => ({
+        id: index + 1,
+        ...item,
+      })),
+      date: new Date().toISOString().split('T')[0],
+      totalAmount: totalAmount.toFixed(2),
     };
+
     setInvoices((prevInvoices) => [...prevInvoices, newInvoice]);
   };
 
