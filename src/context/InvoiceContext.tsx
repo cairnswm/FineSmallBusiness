@@ -41,7 +41,10 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     deleteInvoice: dashboardDeleteInvoice,
   } = useDashboardContext();
 
-  const [invoices, setInvoices] = useState<Invoice[]>(dashboardInvoices);
+  const [invoices, setInvoices] = useState<Invoice[]>(dashboardInvoices.map(invoice => ({
+    ...invoice,
+    lineItems: invoice.lineItems || [],
+  })));
 
   useEffect(() => {
     setInvoices(dashboardInvoices);

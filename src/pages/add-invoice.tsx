@@ -46,7 +46,13 @@ const AddInvoicePage: React.FC = () => {
         }));
       }
     }
-    return [{ description: "", quantity: 1, price: 0 }];
+    return existingInvoice?.lineItems?.length
+      ? existingInvoice.lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          price: item.unitPrice,
+        }))
+      : [{ description: "", quantity: 1, price: 0 }];
   });
 
   const handleLineItemChange = (index: number, field: string, value: string | number) => {
@@ -239,6 +245,9 @@ const AddInvoicePage: React.FC = () => {
               {new URLSearchParams(window.location.search).get("id") ? "Update Invoice" : "Add Invoice"}
             </Button>
           </div>
+        </div>
+        <div className="text-right text-sm text-muted-foreground">
+          Note: Ensure all line items are accurate before saving.
         </div>
       </Form>
 
