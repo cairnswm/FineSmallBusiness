@@ -30,6 +30,9 @@ const ClientCard: React.FC<ClientCardProps> = ({ id, name, email, phone, address
         <Button variant="outline" size="sm" onClick={() => onToggleStatus(id)}>
           {status === "active" ? "Deactivate" : "Activate"}
         </Button>
+        <Button variant="outline" size="sm" onClick={() => onDelete(id)}>
+          Delete
+        </Button>
         <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
           Edit
         </Button>

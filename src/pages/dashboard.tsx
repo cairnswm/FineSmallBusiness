@@ -6,6 +6,7 @@ import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
 import AddEditQuoteModal from "@/components/dashboard/AddEditQuoteModal";
+import AddEditClientCard from "@/components/dashboard/AddEditClientCard";
 import { useQuoteContext } from "@/context/QuoteContext";
 import { useInvoiceContext } from "@/context/InvoiceContext";
 import { useDashboardContext } from "@/context/DashboardContext";
@@ -14,14 +15,26 @@ const Dashboard = () => {
   const { clients } = useDashboardContext();
   const { quotes } = useQuoteContext();
   const { invoices } = useInvoiceContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
 
   const handleAddQuoteClick = () => {
-    setIsModalOpen(true);
+    setIsQuoteModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleCloseQuoteModal = () => {
+    setIsQuoteModalOpen(false);
+  };
+
+  const handleEditClient = (id: number) => {
+    setSelectedClientId(id);
+    setIsClientModalOpen(true);
+  };
+
+  const handleCloseClientModal = () => {
+    setSelectedClientId(null);
+    setIsClientModalOpen(false);
   };
 
   return (
@@ -52,7 +65,7 @@ const Dashboard = () => {
                   phone={client.phone}
                   address={client.address}
                   status={client.status}
-                  onEdit={(id) => console.log(`Edit client ${id}`)}
+                  onEdit={handleEditClient}
                   onDelete={(id) => console.log(`Delete client ${id}`)}
                 />
               ))}
@@ -112,6 +125,11 @@ const Dashboard = () => {
         </section>
       </div>
 
+      <AddEditClientCard
+        isOpen={isClientModalOpen}
+        onClose={handleCloseClientModal}
+        clientId={selectedClientId}
+      />
     </div>
   );
 };
