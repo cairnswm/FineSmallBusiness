@@ -18,6 +18,8 @@ interface DashboardContextType {
   addClient: (client: Client) => void;
   addInvoice: (invoice: Omit<Invoice, 'id'>) => void;
   updateBusinessInfo: (info: BusinessInfo) => Promise<void>;
+  updateClientStatus: (id: number, status: "active" | "inactive") => void;
+  editClient: (id: number, updatedClient: Partial<Client>) => void;
 }
 interface BusinessInfo {
   name: string;

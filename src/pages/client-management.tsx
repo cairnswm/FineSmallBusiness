@@ -44,7 +44,6 @@ const ClientManagement = () => {
 
   return (
     <div className="p-6 space-y-6">
-    CLIENT
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Client Management</h1>
         <Button onClick={handleAddClient}>Add Client</Button>
