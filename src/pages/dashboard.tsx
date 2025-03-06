@@ -97,12 +97,6 @@ const Dashboard = () => {
               <InvoiceCard
                 key={invoice.id}
                 id={invoice.id}
-                title={invoice.title}
-                description={invoice.description}
-                lineItems={invoice.lineItems}
-                date={invoice.date}
-                onEdit={(id) => console.log(`Edit invoice ${id}`)}
-                onDelete={(id) => deleteInvoice(id)}
               />
             ))}
           </div>
