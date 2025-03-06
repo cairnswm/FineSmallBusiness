@@ -45,8 +45,8 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
     ...invoice,
     lineItems: invoice.lineItems || [],
   })) : [
-    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", lineItems: [], date: "2023-03-01" },
-    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", lineItems: [], date: "2023-04-01" },
+    { id: 1, title: "Invoice 1", description: "Description for Invoice 1", lineItems: [{ id: 1, description: "Item 1", quantity: 2, unitPrice: 50 }], date: "2023-03-01" },
+    { id: 2, title: "Invoice 2", description: "Description for Invoice 2", lineItems: [{ id: 2, description: "Item 2", quantity: 1, unitPrice: 100 }], date: "2023-04-01" },
   ]);
 
   useEffect(() => {

@@ -93,12 +93,16 @@ const Dashboard = () => {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {invoices.map((invoice) => (
+            {invoices?.map((invoice) => (
               <InvoiceCard
                 key={invoice.id}
                 id={invoice.id}
               />
-            ))}
+            )) || (
+              <div className="text-center text-muted-foreground">
+                No invoices available.
+              </div>
+            )}
           </div>
         </section>
       </div>
