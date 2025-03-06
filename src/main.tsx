@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import AddInvoicePage from "./pages/add-invoice";
+import SettingsPage from "./pages/settings";
 import { ThemeProvider } from "./components/layout/theme-provider";
 import { DashboardProvider } from "./context/DashboardContext";
 import { QuoteProvider } from "./context/QuoteContext";
