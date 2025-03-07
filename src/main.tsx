@@ -21,6 +21,7 @@ import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
 import ClientManagement from "./pages/client-management";
+import QuotesPage from "./pages/quotes";
 
 const queryClient = new QueryClient();
 
