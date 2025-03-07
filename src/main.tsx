@@ -22,7 +22,8 @@ import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
 import ClientManagement from "./pages/client-management";
 import QuotesPage from "./pages/quotes";
-
+import InvoicesPage from "./pages/invoices";
+ 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
@@ -43,7 +44,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/clients" element={<ClientManagement />} />
                   <Route path="/add-edit-client" element={<AddEditClientPage />} />
                   <Route path="/quotes" element={<QuotesPage />} />
-                  <Route path="/invoices" element={<Dashboard />} />
+                  <Route path="/invoices" element={<InvoicesPage />} />
                 </Routes>
               </InvoiceProvider>
             </QuoteProvider>
