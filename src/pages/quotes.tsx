@@ -8,6 +8,7 @@ const QuotesPage: React.FC = () => {
   const { quotes } = useQuoteContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuoteId, setSelectedQuoteId] = useState<number | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
   const handleAddQuote = () => {
     setSelectedQuoteId(null);
@@ -33,8 +34,22 @@ const QuotesPage: React.FC = () => {
       <div className="flex justify-start mt-4">
         <Button onClick={handleAddQuote}>Add Quote</Button>
       </div>
+      <div className="flex justify-start mt-4">
+        <select
+          className="border border-gray-300 rounded-md p-2"
+          value={statusFilter || ""}
+          onChange={(e) => setStatusFilter(e.target.value || null)}
+        >
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {quotes.map((quote) => (
+        {quotes
+          .filter((quote) => !statusFilter || quote.status === statusFilter)
+          .map((quote) => (
           <QuoteCard
             key={quote.id}
             id={quote.id}

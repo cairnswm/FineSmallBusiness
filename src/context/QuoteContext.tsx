@@ -23,6 +23,7 @@ interface Quote {
   description: string;
   lineItems: LineItem[];
   date: string;
+  status: string;
 }
 
 interface LineItem {
@@ -63,6 +64,7 @@ const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         { id: 2, description: 'Development', quantity: 1, unitPrice: 2000 },
       ],
       date: '2023-02-01',
+      status: 'pending',
     },
     {
       id: 3,
@@ -73,6 +75,7 @@ const QuoteProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         { id: 2, description: 'Monthly Optimization', quantity: 6, unitPrice: 200 },
       ],
       date: '2023-03-01',
+      status: 'completed',
     }
   ]);
 

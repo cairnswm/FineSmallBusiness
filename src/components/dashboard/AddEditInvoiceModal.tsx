@@ -19,6 +19,7 @@ const AddEditInvoiceModal: React.FC<AddEditInvoiceModalProps> = ({ isOpen, onClo
     description: '',
     amount: '',
     clientId: '',
+  status: '',
   });
 
   const [newClient, setNewClient] = useState({
@@ -39,6 +40,7 @@ const AddEditInvoiceModal: React.FC<AddEditInvoiceModalProps> = ({ isOpen, onClo
           description: invoice.description || '',
           amount: invoice.amount || '',
           clientId: '',
+          status: invoice.status || '',
         });
       }
     }
@@ -212,6 +214,26 @@ const AddEditInvoiceModal: React.FC<AddEditInvoiceModalProps> = ({ isOpen, onClo
               </Button>
             </div>
           )}
+          <FormItem>
+            <FormLabel htmlFor="status">Status</FormLabel>
+            <FormControl>
+              <Select
+                value={formData.status}
+                onValueChange={(value) => setFormData((prevData) => ({ ...prevData, status: value }))}
+              >
+                <SelectTrigger>
+                  {formData.status || 'Select a status'}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="paid">Paid</SelectItem>
+                  <SelectItem value="overdue">Overdue</SelectItem>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+          
           <DialogFooter>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel

@@ -15,6 +15,7 @@ interface Invoice {
   description: string;
   lineItems: LineItem[];
   date: string;
+  status: string;
 }
 
 interface LineItem {
@@ -54,6 +55,7 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 ]
               : [],
             date: "2023-01-01",
+            status: "pending",
           },
           {
             id: 2,
@@ -69,6 +71,7 @@ const InvoiceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 ]
               : [],
             date: "2023-02-01",
+            status: "paid",
           },
         ];
   });

@@ -36,6 +36,13 @@ interface Client {
   address: string;
   status: "active" | "inactive";
 }
+interface LineItem {
+  id: number;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+}
+
 interface Quote {
   id: number;
   title: string;
@@ -44,12 +51,6 @@ interface Quote {
   date: string;
 }
 
-interface LineItem {
-  id: number;
-  description: string;
-  quantity: number;
-  unitPrice: number;
-}
 interface Invoice {
   id: number;
   title: string;
