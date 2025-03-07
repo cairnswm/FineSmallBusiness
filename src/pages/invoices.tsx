@@ -28,8 +28,11 @@ const InvoicesPage: React.FC = () => {
     <div className="p-6 space-y-6">
       <header className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Invoices</h1>
-        <Button onClick={handleAddInvoice}>Add Invoice</Button>
+        <Button variant="outline" onClick={() => window.history.back()}>Back</Button>
       </header>
+      <div>
+        <Button onClick={handleAddInvoice}>Add Invoice</Button>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {invoices.map((invoice) => (
           <InvoiceCard key={invoice.id} id={invoice.id} />
