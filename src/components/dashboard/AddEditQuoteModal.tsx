@@ -20,6 +20,7 @@ const AddEditQuoteModal: React.FC<AddEditQuoteModalProps> = ({ isOpen, onClose, 
     amount: '',
     clientId: '',
   });
+  const [status, setStatus] = useState('');
 
   const [newClient, setNewClient] = useState({
     name: '',
@@ -212,12 +213,30 @@ const AddEditQuoteModal: React.FC<AddEditQuoteModalProps> = ({ isOpen, onClose, 
               </Button>
             </div>
           )}
-          <DialogFooter>
+          <FormItem>
+            <FormLabel htmlFor="status">Status</FormLabel>
+            <FormControl>
+              <Select
+                value={status}
+                onValueChange={(value) => setStatus(value)}
+              >
+                <SelectTrigger>
+                  {status || 'Select a status'}
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
             <Button type="submit">{quoteId ? 'Update Quote' : 'Add Quote'}</Button>
-          </DialogFooter>
+         
         </Form>
       </DialogContent>
     </Dialog>

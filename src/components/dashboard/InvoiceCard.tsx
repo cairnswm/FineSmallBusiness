@@ -31,6 +31,7 @@ const InvoiceCard: React.FC<InvoiceCardProps> = ({ id }) => {
       <CardContent>
         <div className="text-md font-medium text-primary">Total Amount: ${totalAmount}</div>
         <div className="text-sm text-muted-foreground">Date Issued: {invoice.date}</div>
+        <div className="text-sm text-muted-foreground">Status: {invoice.status}</div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2">
         <Button
