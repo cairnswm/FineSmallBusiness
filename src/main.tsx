@@ -43,7 +43,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/clients" element={<ClientManagement />} />
                   <Route path="/add-edit-client" element={<AddEditClientPage />} />
                   <Route path="/quotes" element={<QuotesPage />} />
-                  <Route path="/invoices" element={<Dashboard />} />
+                  <Route path="/invoices" element={<InvoicesPage />} />
                 </Routes>
               </InvoiceProvider>
             </QuoteProvider>
