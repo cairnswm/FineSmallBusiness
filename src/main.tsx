@@ -22,8 +22,8 @@ import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
 import ClientManagement from "./pages/client-management";
 import QuotesPage from "./pages/quotes";
-import InvoicePage from "./pages/invoices";
-
+import InvoicesPage from "./pages/invoices";
+ 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
