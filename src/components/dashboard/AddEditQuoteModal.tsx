@@ -236,10 +236,7 @@ const AddEditQuoteModal: React.FC<AddEditQuoteModalProps> = ({ isOpen, onClose, 
               Cancel
             </Button>
             <Button type="submit">{quoteId ? 'Update Quote' : 'Add Quote'}</Button>
-          </DialogFooter>
-        </Form>
-      </DialogContent>
-    </Dialog>
+         
         </Form>
       </DialogContent>
     </Dialog>
