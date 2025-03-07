@@ -240,6 +240,9 @@ const AddEditQuoteModal: React.FC<AddEditQuoteModalProps> = ({ isOpen, onClose, 
         </Form>
       </DialogContent>
     </Dialog>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
