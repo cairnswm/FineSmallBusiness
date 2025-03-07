@@ -21,6 +21,7 @@ import LandingPage from "./pages/LandingPage";
 import Dashboard from "./pages/dashboard";
 import AddQuotePage from "./pages/add-quote";
 import ClientManagement from "./pages/client-management";
+import QuotesPage from "./pages/quotes";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +42,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="/clients" element={<ClientManagement />} />
                   <Route path="/add-edit-client" element={<AddEditClientPage />} />
-                  <Route path="/quotes" element={<Dashboard />} />
+                  <Route path="/quotes" element={<QuotesPage />} />
                   <Route path="/invoices" element={<Dashboard />} />
                 </Routes>
               </InvoiceProvider>
