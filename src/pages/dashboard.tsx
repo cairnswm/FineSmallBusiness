@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import BusinessInfo from "@/components/dashboard/BusinessInfo";
+import CollapsibleSection from "@/components/dashboard/CollapsibleSection";
 import ClientCard from "@/components/dashboard/ClientCard";
 import QuoteCard from "@/components/dashboard/QuoteCard";
 import InvoiceCard from "@/components/dashboard/InvoiceCard";
@@ -25,13 +26,11 @@ const Dashboard = () => {
       <DashboardHeader />
 
       <div className="p-6 space-y-6">
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Business Information</h2>
+        <CollapsibleSection title="Business Information" sectionKey="business-info">
           <BusinessInfo />
-        </section>
+        </CollapsibleSection>
 
-        <section>
-          <h2 className="text-2xl font-bold mb-4">Clients</h2>
+        <CollapsibleSection title="Clients" sectionKey="clients">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {clients
               .filter((client) => client.status === "active")
@@ -48,9 +47,9 @@ const Dashboard = () => {
                 />
               ))}
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <section>
+        <CollapsibleSection title="Quotes" sectionKey="quotes">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Quotes</h2>
             <Link
@@ -72,9 +71,9 @@ const Dashboard = () => {
               />
             ))}
           </div>
-        </section>
+        </CollapsibleSection>
 
-        <section>
+        <CollapsibleSection title="Invoices" sectionKey="invoices">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Invoices</h2>
             <Link
@@ -98,7 +97,7 @@ const Dashboard = () => {
               </div>
             )}
           </div>
-        </section>
+        </CollapsibleSection>
       </div>
     </div>
   );
